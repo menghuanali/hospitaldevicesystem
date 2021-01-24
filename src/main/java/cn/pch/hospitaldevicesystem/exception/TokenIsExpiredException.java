@@ -2,8 +2,8 @@ package cn.pch.hospitaldevicesystem.exception;
 
 /**
  * @description: 自定义异常
- * @author: maxiao1
- * @date: 2019/9/13 17:21
+ * @author: pch
+ * @date: 2021/01/24 17:21
  */
 public class TokenIsExpiredException extends Exception {
 

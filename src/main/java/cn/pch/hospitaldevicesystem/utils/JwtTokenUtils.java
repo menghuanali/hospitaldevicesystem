@@ -14,10 +14,19 @@ import java.util.HashMap;
 public class JwtTokenUtils {
 
     public static final String TOKEN_HEADER = "Authorization";
+    /*
+        令牌前缀
+    */
     public static final String TOKEN_PREFIX = "Bearer ";
 
-    private static final String SECRET = "jwtsecretdemo";
-    private static final String ISS = "echisan";
+    /*
+        token秘钥
+    */
+    private static final String SECRET = "jwtsecretpch";
+    /*
+        签发者,写死 pch
+    */
+    private static final String ISS = "panchenghua";
 
     // 角色的key
     private static final String ROLE_CLAIMS = "rol";
@@ -38,7 +47,7 @@ public class JwtTokenUtils {
                 .setClaims(map)
                 .setIssuer(ISS)
                 .setSubject(username)
-                .setIssuedAt(new Date())
+                .setIssuedAt(new Date())// 签发时间
                 .setExpiration(new Date(System.currentTimeMillis() + expiration * 1000))
                 .compact();
     }

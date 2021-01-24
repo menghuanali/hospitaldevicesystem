@@ -11,8 +11,8 @@ import java.io.IOException;
 
 /**
  * @description:没有访问权限
- * @author: maxiao1
- * @date: 2019/9/13 17:41
+ * @author: pch
+ * @date: 2021/01/24 17:41
  */
 public class JWTAccessDeniedHandler implements AccessDeniedHandler {
     @Override

@@ -31,6 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
 
+    /*
+        加密工具
+    */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,9 +46,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http.cors().and().csrf().disable()//禁用CSRF
                 .authorizeRequests()
-                .antMatchers(HttpMethod.DELETE, "/tasks/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/tasks/**").hasRole("ADMIN")//数据库角色表的角色码必须加ROLE_开头,ROLE_ADMIN
                 // 测试用资源，需要验证了的用户才能访问
                 .antMatchers("/tasks/**").authenticated()
                 // 其他都放行了

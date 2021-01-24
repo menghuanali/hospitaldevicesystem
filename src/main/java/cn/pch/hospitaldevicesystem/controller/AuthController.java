@@ -28,7 +28,10 @@ public class AuthController {
     public String registerUser(@RequestBody Map<String,String> registerUser){
         User user = new User();
         user.setUsername(registerUser.get("username"));
+        //对密码进行编码
         user.setPassword(bCryptPasswordEncoder.encode(registerUser.get("password")));
+        //不对密码进行编码，存储明文
+        //user.setPassword(registerUser.get("password"));
         user.setRole("ROLE_USER");
         User save = userRepository.save(user);
         return save.toString();

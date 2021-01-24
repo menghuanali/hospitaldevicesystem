@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ * 该拦截器用于获取用户登录的信息，只需创建一个token并调用authenticationManager.authenticate()让SpringSecurity去进行验证就可以了，
+ * 不用自己查数据库再对比密码了，这一步交给SpringSecurity去操作。
  * Created by panchenghua on 2021/01/23
  */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -27,6 +29,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private ThreadLocal<Integer> rememberMe = new ThreadLocal<>();
     private AuthenticationManager authenticationManager;
 
+    /*
+        登录的接口我们已经在JWTAuthenticationFilter过滤器设置了。
+    */
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
         super.setFilterProcessesUrl("/auth/login");
@@ -37,16 +42,26 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                                 HttpServletResponse response) throws AuthenticationException {
 
         // 从输入流中获取到登录的信息
-        try {
-            LoginUser loginUser = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
-            rememberMe.set(loginUser.getRememberMe() == null ? 0 : loginUser.getRememberMe());
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList<>())
-            );
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+//        try {
+            // 前端传过来的是json数据
+//            LoginUser loginUser = new ObjectMapper().readValue(request.getInputStream(), LoginUser.class);
+//            rememberMe.set(loginUser.getRememberMe() == null ? 0 : loginUser.getRememberMe());
+//            return authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList<>())
+//            );
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+        // 前端传过来的是key-value数据
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        System.out.println("username:"+username+",password:"+password);
+        LoginUser loginUser=new LoginUser(username,password);
+        rememberMe.set(loginUser.getRememberMe() == null ? 0 : loginUser.getRememberMe());
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword(), new ArrayList<>()));
+
     }
 
     // 成功验证后调用的方法
