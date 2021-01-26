@@ -3,7 +3,7 @@ package cn.pch.hospitaldevicesystem.enums;
 /**
  * @program: hospitaldevicesystem
  * @description: 角色权限的枚举类
- * @author: Mr.Wang
+ * @author: Mr.Pan
  * @create: 2021-01-24 13:29
  **/
 public enum RoleEnums {

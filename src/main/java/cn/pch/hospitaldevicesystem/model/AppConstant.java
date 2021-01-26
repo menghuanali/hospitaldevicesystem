@@ -3,7 +3,7 @@ package cn.pch.hospitaldevicesystem.model;
 /**
  * @program: hospitaldevicesystem
  * @description: 需要返回的消息参数
- * @author: Mr.Wang
+ * @author: Mr.Pan
  * @create: 2021-01-24 12:57
  **/
 public class AppConstant {

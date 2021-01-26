@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @program: hospitaldevicesystem
  * @description: 接口返回模型
- * @author: Mr.Wang
+ * @author: Mr.Pan
  * @create: 2021-01-24 12:56
  **/
 public class RestResponse extends HashMap<String, Object> {
