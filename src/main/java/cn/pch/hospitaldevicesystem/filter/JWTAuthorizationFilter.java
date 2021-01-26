@@ -20,7 +20,7 @@ import java.util.Collections;
  * 进行鉴权了，每一次需要权限的请求都需要检查该用户是否有该权限去操作该资源，
  * 只要告诉SpringSecurity该用户是否已登录，是什么角色，拥有什么权限就可以了
  * JWTAuthorizationFilter继承于BasicAuthenticationFilter。
- * Created by panchenghua on 2021/01/23
+ * Created by 潘成花 on 2021/01/23
  */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 

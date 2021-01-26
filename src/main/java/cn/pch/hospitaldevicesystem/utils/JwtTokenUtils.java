@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 /**
- * Created by panchenghua on 2021/01/23
+ * Created by 潘成花 on 2021/01/23
  */
 public class JwtTokenUtils {
 
@@ -26,7 +26,7 @@ public class JwtTokenUtils {
     /*
         签发者,写死 pch
     */
-    private static final String ISS = "panchenghua";
+    private static final String ISS = "潘成花";
 
     // 角色的key
     private static final String ROLE_CLAIMS = "rol";

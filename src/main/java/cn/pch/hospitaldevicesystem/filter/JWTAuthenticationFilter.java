@@ -22,7 +22,7 @@ import java.util.Collection;
 /**
  * 该拦截器用于获取用户登录的信息，只需创建一个token并调用authenticationManager.authenticate()让SpringSecurity去进行验证就可以了，
  * 不用自己查数据库再对比密码了，这一步交给SpringSecurity去操作。
- * Created by panchenghua on 2021/01/23
+ * Created by 潘成花 on 2021/01/23
  */
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 

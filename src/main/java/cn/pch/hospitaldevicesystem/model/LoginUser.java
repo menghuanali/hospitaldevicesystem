@@ -1,7 +1,7 @@
 package cn.pch.hospitaldevicesystem.model;
 
 /**
- * Created by panchenghua on 2021/01/23
+ * Created by 潘成花 on 2021/01/23
  */
 public class LoginUser {
 

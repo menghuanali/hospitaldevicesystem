@@ -8,53 +8,39 @@ import java.util.Date;
 
 /**
  * @program: hospitaldevicesystem
- * @description: 人员信息
+ * @description: 公告信息
  * @author: 潘成花
- * @create: 2021-01-27 00:12
+ * @create: 2021-01-27 00:09
  **/
 @Data
 @Entity
-@Table(name = "user")
-public class User{
-
+@Table(name = "notice")
+public class Notice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username",nullable=false,length=255)
-    private String username;
-
-    @Column(name = "password",nullable=false,length=255)
-    private String password;
-
     /*
-        角色权限
+        公告类型 具体看NoticeTypeEnums
     */
-    @Column(name = "role",nullable=false,length=100)
-    private String role;
-
-    @Column(name = "tel",nullable=false,length=100)
-    private String tel;
+    @Column(name = "type",nullable=false,length=11)
+    private Integer type;
 
     /*
-        头像地址
+        公告的内容
     */
-    @Column(name = "head_url",nullable=false,length=255)
-    private String headUrl;
-
-    @Column(name = "address",nullable=false,length=100)
-    private String address;
+    @Column(name = "content",nullable=false,length=500)
+    private String content;
 
     /*
-        科室
+        公告的图片 可为空
     */
-    @Column(name = "department",nullable=false,length=100)
-    private String department;
-
+    @Column(name = "picture_url",nullable=true,length=255)
+    private String pictureUrl;
 
     /*
-        下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类
+    下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类
     */
     @Column(name = "create_name",nullable=false,length=100)
     private String createName;

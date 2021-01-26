@@ -8,53 +8,50 @@ import java.util.Date;
 
 /**
  * @program: hospitaldevicesystem
- * @description: 人员信息
+ * @description: 评价信息
  * @author: 潘成花
- * @create: 2021-01-27 00:12
+ * @create: 2021-01-27 00:13
  **/
 @Data
 @Entity
-@Table(name = "user")
-public class User{
-
+@Table(name = "appraise")
+public class Appraise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username",nullable=false,length=255)
-    private String username;
-
-    @Column(name = "password",nullable=false,length=255)
-    private String password;
+    @Column(name = "order_id",nullable=false,length=21)
+    private Long orderId;
 
     /*
-        角色权限
+        何人评价
     */
-    @Column(name = "role",nullable=false,length=100)
-    private String role;
-
-    @Column(name = "tel",nullable=false,length=100)
-    private String tel;
+    @Column(name = "from_user_id",nullable=false,length=21)
+    private Long fromUserId;
 
     /*
-        头像地址
+        对何人评价
     */
-    @Column(name = "head_url",nullable=false,length=255)
-    private String headUrl;
+    @Column(name = "to_user_id",nullable=false,length=21)
+    private Long toUserId;
 
-    @Column(name = "address",nullable=false,length=100)
-    private String address;
+    @Column(name = "content",nullable=false,length=500)
+    private String content;
 
     /*
-        科室
+        好评中评还是差评还是追加好评追加差评等 具体看 AppraiseTypeEnums
     */
-    @Column(name = "department",nullable=false,length=100)
-    private String department;
-
+    @Column(name = "type",nullable=false,length=11)
+    private Integer type;
 
     /*
-        下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类
+        追加评价
+    */
+    @Column(name = "appraise_add",nullable=true,length=500)
+    private String appraiseAdd;
+    /*
+    下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类
     */
     @Column(name = "create_name",nullable=false,length=100)
     private String createName;
@@ -70,11 +67,11 @@ public class User{
     @Column(name = "version",nullable=false,length=11)
     @ColumnDefault("1")
     private Integer version;
-
     /*
     是否删除 逻辑删除 1表示删除了 0表示未删除 默认为0
 */
     @Column(name = "is_delete",nullable=false,length=11)
     @ColumnDefault("0")
     private Integer delete;
+
 }

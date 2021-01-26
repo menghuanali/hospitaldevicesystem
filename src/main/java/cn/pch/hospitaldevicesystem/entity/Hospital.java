@@ -8,53 +8,42 @@ import java.util.Date;
 
 /**
  * @program: hospitaldevicesystem
- * @description: 人员信息
+ * @description: 医院信息
  * @author: 潘成花
- * @create: 2021-01-27 00:12
+ * @create: 2021-01-27 01:02
  **/
 @Data
 @Entity
-@Table(name = "user")
-public class User{
-
+@Table(name = "device")
+public class Hospital {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username",nullable=false,length=255)
-    private String username;
-
-    @Column(name = "password",nullable=false,length=255)
-    private String password;
+    @Column(name = "name",nullable=false,length=255)
+    private String name;
 
     /*
-        角色权限
+        医院的地址
     */
-    @Column(name = "role",nullable=false,length=100)
-    private String role;
-
-    @Column(name = "tel",nullable=false,length=100)
-    private String tel;
-
-    /*
-        头像地址
-    */
-    @Column(name = "head_url",nullable=false,length=255)
-    private String headUrl;
-
-    @Column(name = "address",nullable=false,length=100)
+    @Column(name = "address",nullable=true,length=255)
     private String address;
 
     /*
-        科室
+        医院的电话
     */
-    @Column(name = "department",nullable=false,length=100)
-    private String department;
-
+    @Column(name = "tel",nullable=true,length=50)
+    private String tel;
 
     /*
-        下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类
+        医院的图片地址
+    */
+    @Column(name = "picture_url",nullable=true,length=255)
+    private String pictureUrl;
+
+    /*
+    下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类
     */
     @Column(name = "create_name",nullable=false,length=100)
     private String createName;
