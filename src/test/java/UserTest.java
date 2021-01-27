@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -48,6 +49,11 @@ public class UserTest extends TmallApplicationTests{
             User save = userRepository.save(user);
             log.info(":{} --PCH", JSON.toJSONString(save));
         }
+    }
 
+    @Test
+    public void moreTableQuery(){
+        List<Object> result = userRepository.findSql(1L);
+        log.info(":{} --wg317", JSON.toJSONString(result));
     }
 }

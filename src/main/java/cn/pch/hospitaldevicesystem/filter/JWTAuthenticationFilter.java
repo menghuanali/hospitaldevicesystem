@@ -1,9 +1,8 @@
 package cn.pch.hospitaldevicesystem.filter;
 
-import cn.pch.hospitaldevicesystem.entity.JwtUser;
+import cn.pch.hospitaldevicesystem.model.JwtUser;
 import cn.pch.hospitaldevicesystem.model.LoginUser;
 import cn.pch.hospitaldevicesystem.utils.JwtTokenUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

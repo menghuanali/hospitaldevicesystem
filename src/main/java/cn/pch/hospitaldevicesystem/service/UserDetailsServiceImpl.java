@@ -1,6 +1,6 @@
 package cn.pch.hospitaldevicesystem.service;
 
-import cn.pch.hospitaldevicesystem.entity.JwtUser;
+import cn.pch.hospitaldevicesystem.model.JwtUser;
 import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
