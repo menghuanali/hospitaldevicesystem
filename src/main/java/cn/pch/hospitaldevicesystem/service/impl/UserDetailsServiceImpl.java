@@ -1,4 +1,4 @@
-package cn.pch.hospitaldevicesystem.service;
+package cn.pch.hospitaldevicesystem.service.impl;
 
 import cn.pch.hospitaldevicesystem.model.JwtUser;
 import cn.pch.hospitaldevicesystem.entity.User;

@@ -1,0 +1,10 @@
+package cn.pch.hospitaldevicesystem.service;
+
+/**
+ * @author wanggang317
+ * @name AppraiseService
+ * @description
+ * @date 2021/1/27 17:54
+ **/
+public interface AppraiseService {
+}
