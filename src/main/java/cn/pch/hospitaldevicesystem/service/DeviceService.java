@@ -1,7 +1,7 @@
 package cn.pch.hospitaldevicesystem.service;
 
 /**
- * @author wanggang317
+ * @author 潘成花
  * @name DeviceService
  * @description
  * @date 2021/1/27 17:53
