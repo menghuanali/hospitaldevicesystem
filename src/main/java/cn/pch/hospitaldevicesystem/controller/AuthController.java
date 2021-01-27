@@ -2,6 +2,8 @@ package cn.pch.hospitaldevicesystem.controller;
 
 import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.repository.UserRepository;
+import cn.pch.hospitaldevicesystem.utils.RestResponse;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +27,7 @@ public class AuthController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody Map<String,String> registerUser){
+    public RestResponse registerUser(@RequestBody Map<String,String> registerUser){
         User user = new User();
         user.setUsername(registerUser.get("username"));
         //对密码进行编码
@@ -33,7 +35,7 @@ public class AuthController {
         //不对密码进行编码，存储明文
         //user.setPassword(registerUser.get("password"));
         user.setRole("ROLE_USER");
-        return user.toString();
+        return RestResponse.ok(user).msg("跨域成功");
 //        User save = userRepository.save(user);
 //        return save.toString();
     }

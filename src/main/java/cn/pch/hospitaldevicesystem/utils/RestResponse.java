@@ -64,6 +64,7 @@ public class RestResponse extends HashMap<String, Object> {
      * @param value
      * @return
      */
+    @Override
     public RestResponse put(String key, Object value) {
         super.put(key, value);
         return this;
