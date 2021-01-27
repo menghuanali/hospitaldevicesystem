@@ -1,0 +1,29 @@
+//学习使用jpa默认的findById
+Optional<User> userw = userRepository.findById(1L);
+if(userw.isPresent()){//判空
+    User user = userw.get();//得到返回的实体
+}
+
+//返回报文的填充实例
+User user = new User();
+ArrayList<String> list = new ArrayList();
+list.add("潘成花");
+return RestResponse.ok(user).list(list).msg("跨域成功");
+
+//jpa利用save实现更新
+save
+通过save更新时，需要指定id来实现单条记录的修改 实际操作见UserTest
+Optional<User> op = userRepository.findById(1L);
+if(op.isPresent()){//不为空才进来
+    User user = op.get();
+    user.setUsername("花花2号");
+    User save = userRepository.save(user);
+    log.info(":{} --PCH", JSON.toJSONString(save));
+}
+
+//解决springdatajpa设置默认值保存null无效的问题 在实体类上面加这个两个注解即可。
+@DynamicUpdate
+@DynamicInsert
+
+
+//在JPA中，我们可以使用@Version在某个字段上进行乐观锁控制。

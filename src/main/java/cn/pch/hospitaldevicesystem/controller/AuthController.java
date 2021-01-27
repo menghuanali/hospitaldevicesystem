@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by 潘成花 on 2021/01/23
@@ -35,7 +38,9 @@ public class AuthController {
         //不对密码进行编码，存储明文
         //user.setPassword(registerUser.get("password"));
         user.setRole("ROLE_USER");
-        return RestResponse.ok(user).msg("跨域成功");
+        ArrayList<String> list = new ArrayList();
+        list.add("潘成花");
+        return RestResponse.ok(user).list(list).msg("跨域成功");
 //        User save = userRepository.save(user);
 //        return save.toString();
     }

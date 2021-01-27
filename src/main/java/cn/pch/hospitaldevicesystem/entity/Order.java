@@ -2,6 +2,8 @@ package cn.pch.hospitaldevicesystem.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +16,8 @@ import java.util.Date;
  **/
 @Data
 @Entity
+@DynamicUpdate
+@DynamicInsert
 @Table(name = "myorder")//order,是mysql的关键字 这里用myorder
 public class Order {
     @Id
@@ -74,6 +78,7 @@ public class Order {
     */
     @Column(name = "version",nullable=false,length=11)
     @ColumnDefault("1")
+    @Version
     private Integer version;
 
     /*
