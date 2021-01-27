@@ -10,7 +10,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 
 /**
- * @author wanggang317
+ * @author 潘成花
  * @name MessageTest
  * @description
  * @date 2021/1/27 16:31

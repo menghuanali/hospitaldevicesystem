@@ -53,7 +53,7 @@ public class UserTest extends TmallApplicationTests{
 
     @Test
     public void moreTableQuery(){
-        List<Object> result = userRepository.findSql(1L);
-        log.info(":{} --wg317", JSON.toJSONString(result));
+        List<Object> result = userRepository.findAllMessageByUserId(1L);
+        log.info(":{} --PCH", JSON.toJSONString(result));
     }
 }
