@@ -2,6 +2,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.enums.RoleEnums;
 import cn.pch.hospitaldevicesystem.repository.UserRepository;
+import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class UserTest extends TmallApplicationTests{
         user.setAddress("地址信息");
         user.setDepartment("科室");
         user.setCreateName("创建者");
-        user.setCreateTime(DateUtil.date());
+        user.setCreateTime(MyDateUtils.GetNowDate());
         User save = userRepository.save(user);
         log.info(":{} --PCH", JSON.toJSONString(save));
     }

@@ -42,11 +42,11 @@ public class Audit {
     @Column(name = "create_name",nullable=false,length=100)
     private String createName;
     @Column(name = "create_time",nullable=false,length=100)
-    private Date createTime;
+    private String createTime;
     @Column(name = "update_name",nullable=true,length=100)
     private String updateName;
     @Column(name = "update_time",nullable=true,length=100)
-    private Date updateTime;
+    private String updateTime;
     /*
         版本控制
     */
