@@ -40,10 +40,10 @@ public class User{
     /*
         头像地址
     */
-    @Column(name = "head_url",nullable=false,length=255)
+    @Column(name = "head_url",nullable=true,length=255)
     private String headUrl;
 
-    @Column(name = "address",nullable=false,length=100)
+    @Column(name = "address",nullable=true,length=100)
     private String address;
 
     /*
@@ -77,4 +77,24 @@ public class User{
     @Column(name = "is_delete",nullable=false,length=11)
     @ColumnDefault("0")
     private Integer delete;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", tel='" + tel + '\'' +
+                ", headUrl='" + headUrl + '\'' +
+                ", address='" + address + '\'' +
+                ", department='" + department + '\'' +
+                ", createName='" + createName + '\'' +
+                ", createTime=" + createTime +
+                ", updateName='" + updateName + '\'' +
+                ", updateTime=" + updateTime +
+                ", version=" + version +
+                ", delete=" + delete +
+                '}';
+    }
 }
