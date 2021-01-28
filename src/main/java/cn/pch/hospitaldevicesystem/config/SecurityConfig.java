@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 /**
  * Created by 潘成花 on 2021/01/23
@@ -48,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()//禁用CSRF
                 .authorizeRequests()
+                .antMatchers( "/static/**").permitAll()
                 .antMatchers( "/auth/**").permitAll()//数据库角色表的角色码必须加ROLE_开头,ROLE_ADMIN
                 //除了登陆注册其余都要验证登陆
                 .anyRequest().authenticated()
@@ -67,4 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
         return source;
     }
+
+
 }
