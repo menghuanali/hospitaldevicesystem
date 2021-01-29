@@ -1,5 +1,9 @@
 package cn.pch.hospitaldevicesystem.service;
 
+import cn.pch.hospitaldevicesystem.entity.Hospital;
+
+import java.util.List;
+
 /**
  * @author 潘成花
  * @name HospitalService
@@ -7,4 +11,5 @@ package cn.pch.hospitaldevicesystem.service;
  * @date 2021/1/27 17:53
  **/
 public interface HospitalService {
+    List<Hospital> queryAll();
 }

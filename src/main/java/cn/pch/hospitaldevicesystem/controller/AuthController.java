@@ -41,9 +41,10 @@ public class AuthController {
         user.setHeadUrl("/static/images/mychushihead.jpg");
         user.setAddress(registerUser.get("address"));
         user.setDepartment(registerUser.get("department"));
+        user.setHospitalId(Long.valueOf(registerUser.get("hospitalId")));
         user.setCreateName("系统");
         user.setCreateTime(MyDateUtils.GetNowDate());
-        User save = userRepository.save(user);
-        return RestResponse.ok(save).msg("注册成功");
+        userRepository.save(user);
+        return RestResponse.ok().msg("注册成功,耐心等待审核!");
     }
 }

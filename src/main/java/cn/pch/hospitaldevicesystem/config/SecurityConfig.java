@@ -7,7 +7,6 @@ import cn.pch.hospitaldevicesystem.filter.JWTAuthorizationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 /**
  * Created by 潘成花 on 2021/01/23
@@ -50,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()//禁用CSRF
                 .authorizeRequests()
                 .antMatchers( "/static/**").permitAll()
+                .antMatchers( "/hospital/getAll").permitAll()
                 .antMatchers( "/auth/**").permitAll()//数据库角色表的角色码必须加ROLE_开头,ROLE_ADMIN
                 //除了登陆注册其余都要验证登陆
                 .anyRequest().authenticated()

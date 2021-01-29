@@ -53,9 +53,14 @@ public class User{
     /*
         科室
     */
-    @Column(name = "department",nullable=false,length=100)
+    @Column(name = "department",nullable=true,length=100)
     private String department;
 
+    /*
+    科室
+*/
+    @Column(name = "hospital_id",nullable=true,length=21)
+    private Long hospitalId;
 
     /*
         下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类

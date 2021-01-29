@@ -6,7 +6,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @program: hospitaldevicesystem
@@ -18,7 +17,7 @@ import java.util.Date;
 @Entity
 @DynamicUpdate
 @DynamicInsert
-@Table(name = "device")
+@Table(name = "hospital")
 public class Hospital {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
