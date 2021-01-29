@@ -3,7 +3,7 @@ package cn.pch.hospitaldevicesystem.enums;
 /**
  * @program: hospitaldevicesystem
  * @description: 医院的枚举类
- * @author: Mr.Wang
+ * @author: 潘成花
  * @create: 2021-01-29 12:41
  **/
 public enum HospitalEnums {

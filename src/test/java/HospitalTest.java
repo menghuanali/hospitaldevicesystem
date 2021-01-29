@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 /**
  * @program: hospitaldevicesystem
  * @description: 医院测试，添加多家医院
- * @author: Mr.Wang
+ * @author: 潘成花
  * @create: 2021-01-29 12:34
  **/
 @Slf4j

@@ -5,7 +5,7 @@ import lombok.Data;
 /**
  * @program: hospitaldevicesystem
  * @description: 返回的用户模型
- * @author: Mr.Wang
+ * @author: 潘成花
  * @create: 2021-01-29 14:17
  **/
 @Data
