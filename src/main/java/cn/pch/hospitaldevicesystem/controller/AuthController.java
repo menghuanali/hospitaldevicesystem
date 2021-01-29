@@ -40,8 +40,8 @@ public class AuthController {
         user.setTel(registerUser.get("tel"));
         user.setHeadUrl("/static/images/mychushihead.jpg");
         user.setAddress(registerUser.get("address"));
-        user.setDepartment(registerUser.get("department"));
-        user.setHospitalId(Long.valueOf(registerUser.get("hospitalId")));
+        user.setDepartment(registerUser.get("department")==null?null:registerUser.get("department"));
+        user.setHospitalId(registerUser.get("hospitalId")==null?null:Long.valueOf(registerUser.get("hospitalId")));
         user.setCreateName("系统");
         user.setCreateTime(MyDateUtils.GetNowDate());
         userRepository.save(user);

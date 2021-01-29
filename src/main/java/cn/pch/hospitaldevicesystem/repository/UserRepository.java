@@ -18,4 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "select user.id,username from user inner join message on user.id = message.to_user_id and user.id = :id ",nativeQuery = true)
     List<Object> findAllMessageByUserId(@Param("id")Long id);
 
+    /*
+        根据权限查询
+    */
+    List<User> findAllByRoleAndDelete(String role,Integer delete);
+
 }

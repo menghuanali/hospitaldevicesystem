@@ -1,7 +1,8 @@
-import cn.hutool.core.date.DateUtil;
 import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.enums.RoleEnums;
+import cn.pch.hospitaldevicesystem.model.response.UserModel;
 import cn.pch.hospitaldevicesystem.repository.UserRepository;
+import cn.pch.hospitaldevicesystem.service.UserService;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -23,20 +24,25 @@ public class UserTest extends TmallApplicationTests{
     @Resource
     UserRepository userRepository;
 
+    @Resource
+    UserService userService;
+
     @Test
     public void saveUserTest(){
-        User user = new User();
-        user.setUsername("花花");
-        user.setPassword("123");
-        user.setRole(RoleEnums.ROLE_ADMIN.getCode());
-        user.setTel("132");
-        user.setHeadUrl("www");
-        user.setAddress("地址信息");
-        user.setDepartment("科室");
-        user.setCreateName("创建者");
-        user.setCreateTime(MyDateUtils.GetNowDate());
-        User save = userRepository.save(user);
-        log.info(":{} --PCH", JSON.toJSONString(save));
+        for(int i=1;i<=5;i++){
+            User user = new User();
+            user.setUsername("花花");
+            user.setPassword("123");
+            user.setRole(RoleEnums.ROLE_ADMIN.getCode());
+            user.setTel("132");
+            user.setHeadUrl("www");
+            user.setAddress("地址信息");
+            user.setDepartment("科室");
+            user.setCreateName("创建者");
+            user.setCreateTime(MyDateUtils.GetNowDate());
+            User save = userRepository.save(user);
+            log.info(":{} --PCH", JSON.toJSONString(save));
+        }
     }
 
     @Test
@@ -55,5 +61,11 @@ public class UserTest extends TmallApplicationTests{
     public void moreTableQuery(){
         List<Object> result = userRepository.findAllMessageByUserId(1L);
         log.info(":{} --PCH", JSON.toJSONString(result));
+    }
+
+    @Test
+    public void getUserByRole(){
+        List<UserModel> result = userService.queryAllByRole(RoleEnums.ROLE_ADMIN.getCode());
+        log.info(":{} ", JSON.toJSONString(result));
     }
 }

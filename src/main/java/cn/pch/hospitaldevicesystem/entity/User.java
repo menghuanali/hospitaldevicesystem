@@ -6,7 +6,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @program: hospitaldevicesystem
@@ -57,9 +56,9 @@ public class User{
     private String department;
 
     /*
-    科室
-*/
-    @Column(name = "hospital_id",nullable=true,length=21)
+    所属医院id
+    */
+    @Column(name ="hospital_id",nullable=true,length=21)
     private Long hospitalId;
 
     /*

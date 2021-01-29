@@ -7,4 +7,8 @@ package cn.pch.hospitaldevicesystem.service;
  * @date 2021/1/27 17:54
  **/
 public interface ApplyService {
+    /*
+        保存申请单
+    */
+
 }
