@@ -6,5 +6,5 @@ package cn.pch.hospitaldevicesystem.enums;
  * @author: 潘成花
  * @create: 2021-01-27 00:41
  **/
-public class MessageStateEnums {
+public enum MessageStateEnums {
 }

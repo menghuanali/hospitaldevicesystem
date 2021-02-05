@@ -6,5 +6,6 @@ package cn.pch.hospitaldevicesystem.enums;
  * @author: 潘成花
  * @create: 2021-01-27 00:55
  **/
-public class AppraiseTypeEnums {
+public enum AppraiseTypeEnums {
+
 }

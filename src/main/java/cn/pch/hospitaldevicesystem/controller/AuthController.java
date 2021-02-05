@@ -48,7 +48,7 @@ public class AuthController {
         user.setCreateName("系统");
         user.setCreateTime(MyDateUtils.GetNowDate());
         log.info(":{} ", JSON.toJSONString(user));
-//        userRepository.save(user);
+        userRepository.save(user);
         return RestResponse.ok().msg("注册成功,耐心等待审核!");
     }
 }

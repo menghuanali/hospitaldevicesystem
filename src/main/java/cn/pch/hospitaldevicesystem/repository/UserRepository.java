@@ -23,4 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     */
     List<User> findAllByRoleAndDelete(String role,Integer delete);
 
+
 }

@@ -7,10 +7,11 @@ package cn.pch.hospitaldevicesystem.enums;
  * @create: 2021-01-27 00:59
  **/
 public enum ApplyStateEnums {
-    WAIT_AUDIT("待审核",1),
-    AUDIT_PASS("审核通过",2),
+    WAIT_AUDIT("申请成功,待审核",1),
+    AUDIT_PASS("审核通过,创建了订单",2),
     AUDIT_REJECT("审核拒绝",3),
-    OTHER("其他",4);
+    CANCEL("申请已取消",4),
+    OTHER("其他异常状态,请联系管理员",5);
 
     private final String name;
     private final Integer state;
