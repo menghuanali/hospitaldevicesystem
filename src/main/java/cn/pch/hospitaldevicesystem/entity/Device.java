@@ -18,7 +18,7 @@ import javax.persistence.*;
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "device")
-public class Device {
+public class Device{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

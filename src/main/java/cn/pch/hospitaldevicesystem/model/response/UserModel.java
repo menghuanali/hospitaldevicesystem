@@ -9,15 +9,15 @@ import lombok.Data;
  * @create: 2021-01-29 14:17
  **/
 @Data
-public class UserModel {
-    private Long id;
+public class UserModel extends BaseModel{
     private String username;
     private String role;
     private String tel;
     private String headUrl;
     private String address;
+    /*
+    科室
+    */
     private String department;
     private Long hospitalId;
-    private String updateName;
-    private String updateTime;
 }

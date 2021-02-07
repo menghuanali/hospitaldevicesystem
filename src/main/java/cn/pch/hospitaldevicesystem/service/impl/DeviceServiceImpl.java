@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author 潘成花
@@ -26,5 +27,15 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public Device insertOneDevice(Device device) {
         return deviceRepository.save(device);
+    }
+
+    @Override
+    public Device queryOneDevice(Long id) {
+        Optional<Device> device = deviceRepository.findById(id);
+        if(device.isPresent()){//判空
+            Device result = device.get();//得到返回的实体
+            return result;
+        }
+        return null;
     }
 }

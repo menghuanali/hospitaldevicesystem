@@ -9,10 +9,11 @@ package cn.pch.hospitaldevicesystem.enums;
 public enum DeviceStateEnums {
     WAIT_REPAIR("待维修",1),
     NORMAL("正常",2),
-    FAULTING("故障中",3),
+    FAULTING("故障中，申请维修中",3),
     SCRAPPED("报废了",4),
     COMFIRM("维修后待确定",5),
     OTHER("其他异常状态,请联系管理员",6);
+
 
     private final String name;
     private final Integer state;

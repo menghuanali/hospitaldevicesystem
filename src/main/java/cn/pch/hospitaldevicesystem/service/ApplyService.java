@@ -1,5 +1,10 @@
 package cn.pch.hospitaldevicesystem.service;
 
+import cn.pch.hospitaldevicesystem.entity.Apply;
+import cn.pch.hospitaldevicesystem.model.response.ApplyModel;
+
+import java.util.List;
+
 /**
  * @author 潘成花
  * @name ApplyService
@@ -8,7 +13,22 @@ package cn.pch.hospitaldevicesystem.service;
  **/
 public interface ApplyService {
     /*
-        保存申请单
+        保存修改申请单
     */
+    Apply insertOneApply(Apply apply);
 
+    /*
+        得到所有的申请单
+    */
+    List<ApplyModel> queryAll();
+
+    /*
+        根据状态得到申请单
+    */
+    List<ApplyModel> queryAllByState(int state);
+
+    /*
+        根据主键的到一个申请单
+    */
+    ApplyModel queryOneById(Long id);
 }

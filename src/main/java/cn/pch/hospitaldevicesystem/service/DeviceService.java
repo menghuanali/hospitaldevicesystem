@@ -20,4 +20,9 @@ public interface DeviceService {
         插入或者修改一个设备
     */
     Device insertOneDevice(Device device);
+
+    /*
+        根据id得到一个设备
+    */
+    Device queryOneDevice(Long id);
 }
