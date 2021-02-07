@@ -31,4 +31,9 @@ public class UserServiceImpl implements UserService {
         }).collect(Collectors.toList());
         return result;
     }
+
+    @Override
+    public User queryById(Long id) {
+        return userRepository.getOne(id);
+    }
 }

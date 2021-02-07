@@ -6,7 +6,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @program: hospitaldevicesystem
@@ -37,8 +36,8 @@ public class Device {
     /*
         设备的类别 具体                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     看DeviceTypeEnums
     */
-    @Column(name = "type",nullable=true,length=11)
-    private Integer type;
+//    @Column(name = "type",nullable=true,length=11)
+//    private Integer type;
 
     /*
         设备的状态 具体看 DeviceStateEnums

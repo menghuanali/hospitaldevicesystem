@@ -1,5 +1,9 @@
 package cn.pch.hospitaldevicesystem.service;
 
+import cn.pch.hospitaldevicesystem.entity.Device;
+
+import java.util.List;
+
 /**
  * @author 潘成花
  * @name DeviceService
@@ -7,4 +11,13 @@ package cn.pch.hospitaldevicesystem.service;
  * @date 2021/1/27 17:53
  **/
 public interface DeviceService {
+    /*
+        得到所有的设备
+    */
+    List<Device> queryAllDevice();
+
+    /*
+        插入或者修改一个设备
+    */
+    Device insertOneDevice(Device device);
 }
