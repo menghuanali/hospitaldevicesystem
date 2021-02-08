@@ -1,5 +1,6 @@
 package cn.pch.hospitaldevicesystem.model.request;
 
+import cn.pch.hospitaldevicesystem.model.response.BaseModel;
 import lombok.Data;
 
 /**
@@ -9,7 +10,7 @@ import lombok.Data;
  * @create: 2021-01-29 16:16
  **/
 @Data
-public class ApplyCreateModel {
+public class ApplyCreateModel extends BaseModel {
     private Long deviceId;
     private String content;
     private Long fromUserId;

@@ -2,9 +2,11 @@ package cn.pch.hospitaldevicesystem.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.pch.hospitaldevicesystem.entity.Apply;
+import cn.pch.hospitaldevicesystem.model.request.ApplyCreateModel;
 import cn.pch.hospitaldevicesystem.model.response.ApplyModel;
 import cn.pch.hospitaldevicesystem.repository.ApplyRepository;
 import cn.pch.hospitaldevicesystem.service.ApplyService;
+import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -24,8 +26,11 @@ public class ApplyServiceImpl implements ApplyService {
     @Resource
     ApplyRepository applyRepository;
     @Override
-    public Apply insertOneApply(Apply apply) {
-        return applyRepository.save(apply);
+    public Apply insertOneApply(ApplyCreateModel apply) {
+        Apply apply1 = new Apply();
+        BeanUtil.copyProperties(apply,apply1);
+        apply1.setCreateTime(MyDateUtils.GetNowDate());
+        return applyRepository.save(apply1);
     }
 
     @Override

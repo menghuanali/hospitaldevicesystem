@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 /**
  * @program: hospitaldevicesystem
  * @description: 设备的测试类
- * @author: Mr.Wang
+ * @author: 潘成花
  * @create: 2021-02-07 14:17
  **/
 public class DeviceTest extends TmallApplicationTests{

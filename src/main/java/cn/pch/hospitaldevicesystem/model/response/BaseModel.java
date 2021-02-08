@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @program: hospitaldevicesystem
  * @description: 基类的模型
- * @author: Mr.Wang
+ * @author: 潘成花
  * @create: 2021-02-07 15:36
  **/
 public class BaseModel implements Serializable {

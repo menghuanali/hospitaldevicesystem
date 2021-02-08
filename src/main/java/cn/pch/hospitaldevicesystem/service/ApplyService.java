@@ -1,6 +1,7 @@
 package cn.pch.hospitaldevicesystem.service;
 
 import cn.pch.hospitaldevicesystem.entity.Apply;
+import cn.pch.hospitaldevicesystem.model.request.ApplyCreateModel;
 import cn.pch.hospitaldevicesystem.model.response.ApplyModel;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface ApplyService {
     /*
         保存修改申请单
     */
-    Apply insertOneApply(Apply apply);
+    Apply insertOneApply(ApplyCreateModel apply);
 
     /*
         得到所有的申请单

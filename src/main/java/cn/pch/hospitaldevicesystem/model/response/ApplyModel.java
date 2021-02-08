@@ -3,7 +3,7 @@ package cn.pch.hospitaldevicesystem.model.response;
 /**
  * @program: hospitaldevicesystem
  * @description: 返回的申请单模型
- * @author: Mr.Wang
+ * @author: 潘成花
  * @create: 2021-02-07 15:34
  **/
 public class ApplyModel extends BaseModel{
