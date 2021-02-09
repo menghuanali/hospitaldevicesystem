@@ -27,4 +27,8 @@ public interface MessageService {
         根据id查找一条短信
     */
     Message queryByid(Long id);
+    /*
+        根据id删除
+    */
+    void removeByid(Long id);
 }

@@ -20,4 +20,8 @@ public interface OrderLogService {
         得到某个订单的所有日志 并按照时间降序排列
     */
     List<OrderLog> queryAllByOrderId(Long orderId);
+    /*
+        根据id删除
+    */
+    void removeByid(Long id);
 }

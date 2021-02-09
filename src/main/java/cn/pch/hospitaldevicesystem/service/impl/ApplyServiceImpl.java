@@ -67,4 +67,9 @@ public class ApplyServiceImpl implements ApplyService {
             return null;
         }
     }
+
+    @Override
+    public void removeByid(Long id) {
+        applyRepository.deleteById(id);
+    }
 }

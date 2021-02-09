@@ -22,4 +22,9 @@ public class HospitalServiceImpl implements HospitalService {
     public List<Hospital> queryAll() {
         return hospitalRepository.findAll();
     }
+
+    @Override
+    public void removeByid(Long id) {
+        hospitalRepository.deleteById(id);
+    }
 }

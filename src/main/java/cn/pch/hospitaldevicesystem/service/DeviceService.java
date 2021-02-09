@@ -25,4 +25,8 @@ public interface DeviceService {
         根据id得到一个设备
     */
     Device queryByid(Long id);
+    /*
+        根据id删除
+    */
+    void removeByid(Long id);
 }

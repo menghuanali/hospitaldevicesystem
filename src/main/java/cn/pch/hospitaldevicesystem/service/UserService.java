@@ -25,4 +25,8 @@ public interface UserService {
         保存更改用户的信息
     */
     User insertOneUser(User user);
+    /*
+        根据id删除
+    */
+    void removeByid(Long id);
 }

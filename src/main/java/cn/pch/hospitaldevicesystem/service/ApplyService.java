@@ -32,4 +32,8 @@ public interface ApplyService {
         根据主键的到一个申请单
     */
     ApplyModel queryById(Long id);
+    /*
+        根据id删除
+    */
+    void removeByid(Long id);
 }

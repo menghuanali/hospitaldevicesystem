@@ -34,4 +34,9 @@ public class OrderLogServiceImpl implements OrderLogService {
         return orderLogRepository.findAllByOrderIdOrderByIdDesc(orderId);
     }
 
+    @Override
+    public void removeByid(Long id) {
+        orderLogRepository.deleteById(id);
+    }
+
 }

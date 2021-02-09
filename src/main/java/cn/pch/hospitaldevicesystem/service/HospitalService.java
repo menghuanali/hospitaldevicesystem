@@ -12,4 +12,8 @@ import java.util.List;
  **/
 public interface HospitalService {
     List<Hospital> queryAll();
+    /*
+        根据id删除
+    */
+    void removeByid(Long id);
 }

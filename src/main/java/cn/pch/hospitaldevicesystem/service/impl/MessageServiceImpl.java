@@ -44,4 +44,9 @@ public class MessageServiceImpl implements MessageService {
             return null;
         }
     }
+
+    @Override
+    public void removeByid(Long id) {
+        messageRepository.deleteById(id);
+    }
 }

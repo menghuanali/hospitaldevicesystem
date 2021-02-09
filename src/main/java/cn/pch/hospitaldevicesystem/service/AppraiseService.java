@@ -28,4 +28,8 @@ public interface AppraiseService {
     得到某个订单得所有评价某个状态得评价并且按照时间降序
 */
     List<AppraiseModel> queryAllByOrderIdAndState(Long orderId,Integer type);
+    /*
+    根据id删除
+    */
+    void removeByid(Long id);
 }

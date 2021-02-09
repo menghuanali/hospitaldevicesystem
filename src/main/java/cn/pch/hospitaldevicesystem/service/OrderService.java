@@ -38,4 +38,8 @@ public interface OrderService {
         根据id查找某个订单
     */
     Order queryById(Long id);
+    /*
+        根据id删除
+    */
+    void removeByid(Long id);
 }

@@ -59,4 +59,9 @@ public class AppraiseServiceImpl implements AppraiseService {
         }).collect(Collectors.toList());
         return result;
     }
+
+    @Override
+    public void removeByid(Long id) {
+        appraiseRepository.deleteById(id);
+    }
 }

@@ -38,4 +38,9 @@ public class DeviceServiceImpl implements DeviceService {
         }
         return null;
     }
+
+    @Override
+    public void removeByid(Long id) {
+        deviceRepository.deleteById(id);
+    }
 }
