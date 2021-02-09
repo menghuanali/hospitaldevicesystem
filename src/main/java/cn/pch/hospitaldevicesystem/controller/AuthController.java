@@ -2,7 +2,7 @@ package cn.pch.hospitaldevicesystem.controller;
 
 import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.enums.RoleEnums;
-import cn.pch.hospitaldevicesystem.repository.UserRepository;
+import cn.pch.hospitaldevicesystem.service.UserService;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
 import com.alibaba.fastjson.JSON;
@@ -26,7 +26,7 @@ import java.util.Map;
 public class AuthController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -48,7 +48,7 @@ public class AuthController {
         user.setCreateName("系统");
         user.setCreateTime(MyDateUtils.GetNowDate());
         log.info(":{} ", JSON.toJSONString(user));
-        userRepository.save(user);
+        userService.insertOneUser(user);
         return RestResponse.ok().msg("注册成功,耐心等待审核!");
     }
 }

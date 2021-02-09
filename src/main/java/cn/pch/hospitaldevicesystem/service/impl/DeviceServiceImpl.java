@@ -30,7 +30,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public Device queryOneDevice(Long id) {
+    public Device queryByid(Long id) {
         Optional<Device> device = deviceRepository.findById(id);
         if(device.isPresent()){//判空
             Device result = device.get();//得到返回的实体

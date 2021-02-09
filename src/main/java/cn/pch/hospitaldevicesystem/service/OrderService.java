@@ -34,4 +34,8 @@ public interface OrderService {
         插入一个新的订单
     */
     Order insertOneOrder(Order order);
+    /*
+        根据id查找某个订单
+    */
+    Order queryById(Long id);
 }

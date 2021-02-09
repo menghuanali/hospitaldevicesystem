@@ -56,7 +56,7 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public ApplyModel queryOneById(Long id) {
+    public ApplyModel queryById(Long id) {
         Optional<Apply> dbApply = applyRepository.findById(id);
         if(dbApply.isPresent()){
             Apply apply = dbApply.get();

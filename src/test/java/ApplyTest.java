@@ -2,6 +2,7 @@ import cn.pch.hospitaldevicesystem.entity.Apply;
 import cn.pch.hospitaldevicesystem.entity.Device;
 import cn.pch.hospitaldevicesystem.enums.ApplyStateEnums;
 import cn.pch.hospitaldevicesystem.enums.ApplyTypeEnums;
+import cn.pch.hospitaldevicesystem.repository.ApplyRepository;
 import cn.pch.hospitaldevicesystem.service.ApplyService;
 import cn.pch.hospitaldevicesystem.service.DeviceService;
 import cn.pch.hospitaldevicesystem.service.UserService;
@@ -22,6 +23,8 @@ public class ApplyTest extends TmallApplicationTests{
 
     @Resource
     ApplyService applyService;
+    @Resource
+    ApplyRepository applyRepository;
 
     @Resource
     UserService userService;
@@ -36,12 +39,12 @@ public class ApplyTest extends TmallApplicationTests{
             apply.setContent("该设备需要维修了，麻烦尽快派人过来!!");
             apply.setState(ApplyStateEnums.WAIT_AUDIT.getState());
             apply.setFromUserId(1L);
-            Device device = deviceService.queryOneDevice(i+0L);
+            Device device = deviceService.queryByid(i+0L);
             apply.setFromHospitalId(device.getHospitalId());
             apply.setFromType(ApplyTypeEnums.COMEFROM_SYSTEM.getState());
             apply.setCreateName("系统");
             apply.setCreateTime(MyDateUtils.GetNowDate());
-            applyService.insertOneApply(apply);
+            applyRepository.save(apply);
         }
     }
 }

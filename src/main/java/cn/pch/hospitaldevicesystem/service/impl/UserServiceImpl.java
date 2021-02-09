@@ -47,4 +47,9 @@ public class UserServiceImpl implements UserService {
 //每次初始化一个实体的关联就会创建一个临时的session来加载，每个临时的session都会获取一个临时的数据库连接，开启一个新的事物。这就导致对底层连接池压力很大，而且事物日志也会被每次flush.
 //设想一下：假如我们查询了一个分页list每次查出1000条，这个实体有三个lazy关联对象,那么，恭喜你，你至少需要创建3000个临时session+connection+transaction.
     }
+
+    @Override
+    public User insertOneUser(User user) {
+        return userRepository.save(user);
+    }
 }

@@ -2,6 +2,7 @@ package cn.pch.hospitaldevicesystem.repository;
 
 import cn.pch.hospitaldevicesystem.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -17,5 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     /*
         按照时间排序
     */
-    List<Order> findOrderByCreateTimeDesc();
+    @Query(value = "select * from myorder order by create_time desc ", nativeQuery = true)
+    List<Order> findALLOrderByCreateTimeDesc();
 }

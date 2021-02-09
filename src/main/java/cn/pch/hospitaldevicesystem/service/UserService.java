@@ -21,4 +21,8 @@ public interface UserService {
         根据用户id查用户信息
     */
     User queryById(Long id);
+    /*
+        保存更改用户的信息
+    */
+    User insertOneUser(User user);
 }

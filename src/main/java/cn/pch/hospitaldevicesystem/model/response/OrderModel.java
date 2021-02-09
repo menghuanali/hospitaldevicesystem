@@ -1,11 +1,14 @@
 package cn.pch.hospitaldevicesystem.model.response;
 
+import lombok.Data;
+
 /**
  * @program: hospitaldevicesystem
  * @description: 返回的订单模型
  * @author: 潘成花
  * @create: 2021-02-08 17:26
  **/
+@Data
 public class OrderModel extends BaseModel{
     /*
         订单状态 具体看OrderStateEnums
@@ -32,4 +35,8 @@ public class OrderModel extends BaseModel{
         订单的类型 具体看OrderTypeEnums
     */
     private Integer type;
+    /*
+    预计到场修理时间
+    */
+    private String comeTime;
 }

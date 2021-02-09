@@ -1,5 +1,7 @@
 package cn.pch.hospitaldevicesystem.model.response;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +10,7 @@ import java.io.Serializable;
  * @author: 潘成花
  * @create: 2021-02-07 15:36
  **/
+@Data
 public class BaseModel implements Serializable {
 //    当一个父类实现序列化，子类自动实现序列化，不需要显式实现Serializable接口；
     /*

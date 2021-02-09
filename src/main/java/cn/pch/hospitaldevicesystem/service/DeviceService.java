@@ -24,5 +24,5 @@ public interface DeviceService {
     /*
         根据id得到一个设备
     */
-    Device queryOneDevice(Long id);
+    Device queryByid(Long id);
 }

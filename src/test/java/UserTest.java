@@ -37,7 +37,7 @@ public class UserTest extends TmallApplicationTests{
         for(int i=1;i<=5;i++){
             User user = new User();
             user.setUsername("花花");
-            user.setPassword("123");
+            user.setPassword("$10$3gkQ24jYW0hWXvZjdneKuO5dg2HDDDihLe6Zo9HdV8fxg1JwAWmfi");
             user.setRole(RoleEnums.ROLE_ADMIN.getCode());
             user.setTel("132");
             user.setHeadUrl("www");

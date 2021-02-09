@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.Map;
 
 /**
@@ -23,10 +24,10 @@ public class ApplyController {
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_YHUSER')")
-    public RestResponse createApply(@RequestBody Map<String,String> tempMapModel){
+    public RestResponse createApply(Principal principal, @RequestBody Map<String,String> tempMapModel){
         ApplyCreateModel applyCreateModel = new ApplyCreateModel();
 
-
+        System.out.println(principal.getName());
         return RestResponse.ok().msg("请求成功");
     }
 }

@@ -6,7 +6,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @program: hospitaldevicesystem
@@ -62,6 +61,11 @@ public class Order {
     */
     @Column(name = "type",nullable=false,length=11)
     private Integer type;
+    /*
+    预计到场修理时间
+    */
+    @Column(name = "come_time",nullable=false,length=100)
+    private String comeTime;
     /*
     下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类
     */

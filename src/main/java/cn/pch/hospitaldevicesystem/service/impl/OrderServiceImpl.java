@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -56,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderModel> queryAllOrderByCreateTimeDesc() {
-        List<Order> dbResultLsit = orderRepository.findOrderByCreateTimeDesc();
+        List<Order> dbResultLsit = orderRepository.findALLOrderByCreateTimeDesc();
         List<OrderModel> result = dbResultLsit.stream().map(order -> {
             OrderModel orderModel = new OrderModel();
             BeanUtil.copyProperties(order,orderModel);
@@ -68,6 +69,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order insertOneOrder(Order order) {
         return orderRepository.save(order);
+    }
+
+    @Override
+    public Order queryById(Long id) {
+        Optional<Order> dbResult = orderRepository.findById(id);
+        if(dbResult.isPresent()){
+            Order result = dbResult.get();
+            return result;
+        }else {
+            return null;
+        }
     }
 
 }

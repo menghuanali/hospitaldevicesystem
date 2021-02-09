@@ -3,6 +3,8 @@ package cn.pch.hospitaldevicesystem.repository;
 import cn.pch.hospitaldevicesystem.entity.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * @author 潘成花
  * @name MessageRepository
@@ -10,6 +12,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @date 2021/1/27 16:32
  **/
 public interface MessageRepository extends JpaRepository<Message, Long> {
-
+    List<Message> findAllByUserId(Long userId);
+    List<Message> findAllByUserIdAndState(Long userId,Integer state);
 }
 

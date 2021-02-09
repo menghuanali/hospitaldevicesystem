@@ -1,11 +1,14 @@
 package cn.pch.hospitaldevicesystem.model.response;
 
+import lombok.Data;
+
 /**
  * @program: hospitaldevicesystem
  * @description: 返回的申请单模型
  * @author: 潘成花
  * @create: 2021-02-07 15:34
  **/
+@Data
 public class ApplyModel extends BaseModel{
     /*
     设备id

@@ -31,5 +31,5 @@ public interface ApplyService {
     /*
         根据主键的到一个申请单
     */
-    ApplyModel queryOneById(Long id);
+    ApplyModel queryById(Long id);
 }
