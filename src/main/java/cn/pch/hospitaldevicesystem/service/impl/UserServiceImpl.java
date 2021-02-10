@@ -57,4 +57,16 @@ public class UserServiceImpl implements UserService {
     public void removeByid(Long id) {
         userRepository.deleteById(id);
     }
+
+    @Override
+    public User queryByTel(String tel) {
+        List<User> dbResult = userRepository.findAllByTel(tel);
+        if(dbResult.size()==1){
+            User user = new User();
+            user.setUsername(dbResult.get(0).getUsername());
+            return user;
+        }else {
+            return null;
+        }
+    }
 }

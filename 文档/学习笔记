@@ -46,3 +46,6 @@ if(op.isPresent()){//不为空才进来
 
 Spring Security - 获取当前登录用户的详细信息
 参考:https://blog.csdn.net/qq_41247335/article/details/104484137
+
+
+在Android中，将我们本地电脑的地址映射为10.0.2.2，因此，只需要将原先的localhost或者127.0.0.1换成10.0.2.2，就可以在模拟器上访问本地计算机上的Web资源了。

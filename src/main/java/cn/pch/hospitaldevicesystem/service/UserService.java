@@ -29,4 +29,8 @@ public interface UserService {
         根据id删除
     */
     void removeByid(Long id);
+    /*
+        根据电话号码查询用户信息
+    */
+    User queryByTel(String tel);
 }

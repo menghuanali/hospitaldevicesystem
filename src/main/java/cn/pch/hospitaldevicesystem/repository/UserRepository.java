@@ -23,5 +23,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     */
     List<User> findAllByRoleAndDelete(String role,Integer delete);
 
+    /*
+        根据电话号码查询
+    */
+    List<User> findAllByTel(String tel);
 
 }
