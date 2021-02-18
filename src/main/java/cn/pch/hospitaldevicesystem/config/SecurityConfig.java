@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers( "/static/**").permitAll()
                 .antMatchers( "/hospital/getAll").permitAll()
+                .antMatchers( "/notice/getAll").permitAll()
                 .antMatchers( "/auth/**").permitAll()//数据库角色表的角色码必须加ROLE_开头,ROLE_ADMIN
                 //除了登陆注册其余都要验证登陆
                 .anyRequest().authenticated()

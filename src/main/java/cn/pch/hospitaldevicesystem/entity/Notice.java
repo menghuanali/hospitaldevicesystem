@@ -6,7 +6,6 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @program: hospitaldevicesystem
@@ -31,6 +30,11 @@ public class Notice {
     @Column(name = "type",nullable=false,length=11)
     private Integer type;
 
+    /*
+    公告的标题
+    */
+    @Column(name = "title",nullable=false,length=200)
+    private String title;
     /*
         公告的内容
     */

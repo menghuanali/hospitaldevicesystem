@@ -37,7 +37,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public List<Notice> queryAll() {
-        return noticeRepository.findAll();
+        return noticeRepository.findALLNoticeByIdDesc();
     }
 
     @Override

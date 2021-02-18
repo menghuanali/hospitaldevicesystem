@@ -1,13 +1,11 @@
-import cn.pch.hospitaldevicesystem.entity.User;
-import cn.pch.hospitaldevicesystem.enums.RoleEnums;
-import cn.pch.hospitaldevicesystem.repository.UserRepository;
+import cn.pch.hospitaldevicesystem.entity.Notice;
+import cn.pch.hospitaldevicesystem.enums.NoticeTypeEnums;
+import cn.pch.hospitaldevicesystem.service.NoticeService;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import javax.annotation.Resource;
-import java.util.Optional;
 
 /**
  * @author 潘成花
@@ -18,4 +16,20 @@ import java.util.Optional;
 @Slf4j
 public class NoticeTest extends TmallApplicationTests{
 
+    @Resource
+    NoticeService noticeService;
+
+    @Test
+    public void insertAnyNotice(){
+        for(int i=1;i<10;i++){
+            Notice notice = new Notice();
+            notice.setType(NoticeTypeEnums.DEVICE_NOTICE.getCode());
+            notice.setTitle("公告的标题公告的标题公告的标题"+i);
+            notice.setContent("公告的内容公告的内容公告的内容公告的内容公告的内容公告的内容公告的内容公告的内容公告的内容"+i);
+            notice.setPictureUrl("/static/images/notice/"+i+".jpg");
+            notice.setCreateName("系统");
+            notice.setCreateTime(MyDateUtils.GetNowDate());
+            noticeService.insertOneNotice(notice);
+        }
+    }
 }

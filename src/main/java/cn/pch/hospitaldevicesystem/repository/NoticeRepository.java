@@ -2,6 +2,9 @@ package cn.pch.hospitaldevicesystem.repository;
 
 import cn.pch.hospitaldevicesystem.entity.Notice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * @author 潘成花
@@ -10,4 +13,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @date 2021/1/27 17:35
  **/
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
+    /*
+        得到所有的公告id降序
+    */
+    @Query(value = "select * from myorder order by id desc ", nativeQuery = true)
+    List<Notice> findALLNoticeByIdDesc();
 }
