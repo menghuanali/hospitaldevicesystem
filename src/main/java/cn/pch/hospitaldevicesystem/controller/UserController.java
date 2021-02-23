@@ -1,7 +1,9 @@
 package cn.pch.hospitaldevicesystem.controller;
 
+import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
 import cn.pch.hospitaldevicesystem.model.JwtUser;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
+import cn.pch.hospitaldevicesystem.service.MessageService;
 import cn.pch.hospitaldevicesystem.service.UserService;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +27,8 @@ public class UserController {
 
     @Resource
     UserService userService;
+    @Resource
+    MessageService messageService;
 
     @PostMapping("/getUsersByRole")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -37,6 +41,8 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAnyRole('ROLE_KEUSER') or hasAnyRole('ROLE_KPJKEUSER') or hasAnyRole('ROLE_USER')")
     public RestResponse getUserInfoByToken(Principal principal){
         UserModel result = userService.queryByUserName(principal.getName());
+        Integer messageNum = messageService.queryAllByUserIdAndState(result.getId(), MessageStateEnums.WAIT_READ.getState()).size();
+        result.setMessageNum(messageNum);
         return RestResponse.ok(result);
     }
 

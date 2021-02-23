@@ -20,4 +20,8 @@ public class UserModel extends BaseModel{
     */
     private String department;
     private Long hospitalId;
+    /**
+     * 未读消息数量
+     */
+    private Integer messageNum;
 }
