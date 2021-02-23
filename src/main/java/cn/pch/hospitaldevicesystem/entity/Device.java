@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @program: hospitaldevicesystem
@@ -18,7 +19,7 @@ import javax.persistence.*;
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "device")
-public class Device{
+public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -32,12 +33,6 @@ public class Device{
     */
     @Column(name = "picture_url",nullable=true,length=255)
     private String pictureUrl;
-
-    /*
-        设备的类别 具体                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     看DeviceTypeEnums
-    */
-//    @Column(name = "type",nullable=true,length=11)
-//    private Integer type;
 
     /*
         设备的状态 具体看 DeviceStateEnums

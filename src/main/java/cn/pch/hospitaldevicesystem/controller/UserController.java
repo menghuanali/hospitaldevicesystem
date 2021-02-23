@@ -30,4 +30,13 @@ public class UserController {
         return RestResponse.ok(result).msg("请求成功");
     }
 
+    @PostMapping("/getUserInfo")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAnyRole('ROLE_KEUSER') or hasAnyRole('ROLE_KPJKEUSER') or hasAnyRole('ROLE_USER')")
+    public RestResponse getUserInfoByToken(){
+
+        UserModel result = new UserModel();
+
+        return RestResponse.ok(result);
+    }
+
 }
