@@ -42,7 +42,7 @@ public class AuthController {
         //user.setPassword(registerUser.get("password"));
         user.setRole(RoleEnums.ROLE_USER.getCode());//最开始是访客人员
         user.setTel(registerUser.get("tel"));
-        user.setHeadUrl("/static/images/mychushihead.jpg");
+        user.setHeadUrl("static/images/mychushihead.jpg");
         user.setAddress(registerUser.get("address")==null?null:registerUser.get("address"));
         user.setDepartment(registerUser.get("department")==null?null:registerUser.get("department"));
         user.setHospitalId(registerUser.get("hospitalId")==null?null:Long.valueOf(registerUser.get("hospitalId")));

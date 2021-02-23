@@ -1,15 +1,18 @@
 package cn.pch.hospitaldevicesystem.controller;
 
+import cn.pch.hospitaldevicesystem.model.JwtUser;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
 import cn.pch.hospitaldevicesystem.service.UserService;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -32,10 +35,8 @@ public class UserController {
 
     @PostMapping("/getUserInfo")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAnyRole('ROLE_KEUSER') or hasAnyRole('ROLE_KPJKEUSER') or hasAnyRole('ROLE_USER')")
-    public RestResponse getUserInfoByToken(){
-
-        UserModel result = new UserModel();
-
+    public RestResponse getUserInfoByToken(Principal principal){
+        UserModel result = userService.queryByUserName(principal.getName());
         return RestResponse.ok(result);
     }
 

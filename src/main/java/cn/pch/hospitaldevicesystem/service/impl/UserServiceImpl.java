@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
             User result = user.get();
+            result.setPassword("");
             return result;
         }else{
             return null;
@@ -65,6 +66,18 @@ public class UserServiceImpl implements UserService {
             User user = new User();
             user.setUsername(dbResult.get(0).getUsername());
             return user;
+        }else {
+            return null;
+        }
+    }
+
+    @Override
+    public UserModel queryByUserName(String username) {
+        List<User> dbResult = userRepository.findAllByUsername(username);
+        if(dbResult.size()==1){
+            UserModel userModel = new UserModel();
+            BeanUtil.copyProperties(queryById(dbResult.get(0).getId()),userModel);
+            return userModel;
         }else {
             return null;
         }

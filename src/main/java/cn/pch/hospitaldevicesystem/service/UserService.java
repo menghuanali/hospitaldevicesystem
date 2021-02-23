@@ -33,4 +33,8 @@ public interface UserService {
         根据电话号码查询用户信息
     */
     User queryByTel(String tel);
+    /*
+    根据用户名查询用户信息
+    */
+    UserModel queryByUserName(String username);
 }

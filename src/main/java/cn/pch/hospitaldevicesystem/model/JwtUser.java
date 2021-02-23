@@ -74,4 +74,7 @@ public class JwtUser implements UserDetails {
                 '}';
     }
 
+    public Long getId() {
+        return id;
+    }
 }

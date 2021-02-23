@@ -28,4 +28,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     */
     List<User> findAllByTel(String tel);
 
+    /*
+        根据用户名查询
+    */
+    List<User> findAllByUsername(String username);
+
 }
