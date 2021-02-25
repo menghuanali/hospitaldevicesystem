@@ -1,6 +1,7 @@
 package cn.pch.hospitaldevicesystem.service;
 
 import cn.pch.hospitaldevicesystem.entity.Device;
+import cn.pch.hospitaldevicesystem.model.response.DeviceModel;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface DeviceService {
     /*
         得到所有的设备
     */
-    List<Device> queryAllDevice();
+    List<DeviceModel> queryAllDevice();
 
     /*
         插入或者修改一个设备

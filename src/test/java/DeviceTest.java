@@ -15,16 +15,16 @@ public class DeviceTest extends TmallApplicationTests{
     @Resource
     DeviceService deviceService;
     private static String[][] deviceInfos = {
-            {"心脏除颤仪","/static/images/devices/1.jpg"}
-            ,   {"医用冰箱","/static/images/devices/2.jpg"}
-            ,   {"血压计","/static/images/devices/3.jpg"}
-            ,   {"体重计","/static/images/devices/4.jpg"}
-            ,   {"空气消毒机","/static/images/devices/5.jpg"}
-            ,   {"移动紫外线灯","/static/images/devices/6.jpg"}
-            ,   {"心电图机","/static/images/devices/7.jpg"}
-            ,   {"脑电图监测仪","/static/images/devices/8.jpg"}
-            ,   {"显微镜","/static/images/devices/9.jpg"}
-            ,   {"激光治疗仪","/static/images/devices/10.jpg"}
+            {"心脏除颤仪","static/images/devices/1.jpg"}
+            ,   {"医用冰箱","static/images/devices/2.jpg"}
+            ,   {"血压计","static/images/devices/3.jpg"}
+            ,   {"体重计","static/images/devices/4.jpg"}
+            ,   {"空气消毒机","static/images/devices/5.jpg"}
+            ,   {"移动紫外线灯","static/images/devices/6.jpg"}
+            ,   {"心电图机","static/images/devices/7.jpg"}
+            ,   {"脑电图监测仪","static/images/devices/8.jpg"}
+            ,   {"显微镜","static/images/devices/9.jpg"}
+            ,   {"激光治疗仪","static/images/devices/10.jpg"}
     };
     @Test
     public void insertSuijiDevice(){

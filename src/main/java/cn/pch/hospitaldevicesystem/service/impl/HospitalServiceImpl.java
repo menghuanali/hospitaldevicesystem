@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author 潘成花
@@ -26,5 +27,16 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public void removeByid(Long id) {
         hospitalRepository.deleteById(id);
+    }
+
+    @Override
+    public Hospital queryByid(Long id) {
+        Optional<Hospital> dbResult = hospitalRepository.findById(id);
+        if(dbResult.isPresent()){
+            Hospital hospital = dbResult.get();
+            return hospital;
+        }else{
+            return null;
+        }
     }
 }
