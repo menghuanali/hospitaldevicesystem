@@ -37,7 +37,7 @@ public class DeviceServiceImpl implements DeviceService {
         List<DeviceModel> result = dbResultLsit.stream().map(device -> {
             DeviceModel deviceModel = new DeviceModel();
             BeanUtil.copyProperties(device,deviceModel);
-            deviceModel.setState(DeviceStateEnums.of(device.getState()).getName());
+            deviceModel.setStateName(DeviceStateEnums.of(device.getState()).getName());
             User user = userService.queryById(device.getAdminUserId());
             deviceModel.setUsername(user.getUsername());
             deviceModel.setTel(user.getTel());

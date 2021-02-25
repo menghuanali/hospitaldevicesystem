@@ -21,7 +21,11 @@ public class DeviceModel extends BaseModel{
     /**
      * 设备的状态 具体看 DeviceStateEnums
      */
-    private String state;
+    private Integer state;
+    /**
+     * 设备的状态 具体看 DeviceStateEnums
+     */
+    private String stateName;
     /**
      * 设备负责人姓名
      */

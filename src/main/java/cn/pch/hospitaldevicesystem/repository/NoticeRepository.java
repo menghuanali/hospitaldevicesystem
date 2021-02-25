@@ -16,6 +16,6 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
     /*
         得到所有的公告id降序
     */
-    @Query(value = "select * from myorder order by id desc ", nativeQuery = true)
+    @Query(value = "select * from notice order by id desc ", nativeQuery = true)
     List<Notice> findALLNoticeByIdDesc();
 }
