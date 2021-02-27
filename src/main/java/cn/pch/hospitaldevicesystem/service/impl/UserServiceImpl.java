@@ -2,6 +2,7 @@ package cn.pch.hospitaldevicesystem.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.pch.hospitaldevicesystem.entity.User;
+import cn.pch.hospitaldevicesystem.enums.RoleEnums;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
 import cn.pch.hospitaldevicesystem.repository.UserRepository;
 import cn.pch.hospitaldevicesystem.service.UserService;
@@ -77,6 +78,7 @@ public class UserServiceImpl implements UserService {
         if(dbResult.size()==1){
             UserModel userModel = new UserModel();
             BeanUtil.copyProperties(queryById(dbResult.get(0).getId()),userModel);
+            userModel.setRoleName(RoleEnums.of(userModel.getRole()).getName());
             return userModel;
         }else {
             return null;

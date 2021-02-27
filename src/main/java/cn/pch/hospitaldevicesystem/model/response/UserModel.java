@@ -12,6 +12,7 @@ import lombok.Data;
 public class UserModel extends BaseModel{
     private String username;
     private String role;
+    private String roleName;
     private String tel;
     private String headUrl;
     private String address;

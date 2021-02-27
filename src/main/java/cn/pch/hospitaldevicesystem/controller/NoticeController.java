@@ -2,9 +2,7 @@ package cn.pch.hospitaldevicesystem.controller;
 
 import cn.pch.hospitaldevicesystem.service.NoticeService;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -26,4 +24,11 @@ public class NoticeController {
         return RestResponse.ok(noticeService.queryAll());
     }
 
+    /*
+        得到一个公告的详细信息
+    */
+    @GetMapping("/getOneNotice")
+    public RestResponse getOneNotice(@RequestParam(name = "id") String id){
+        return RestResponse.ok(noticeService.queryByid(Long.valueOf(id)));
+    }
 }
