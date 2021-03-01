@@ -1,10 +1,12 @@
 package cn.pch.hospitaldevicesystem.controller;
 
+import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
 import cn.pch.hospitaldevicesystem.model.JwtUser;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
 import cn.pch.hospitaldevicesystem.service.MessageService;
 import cn.pch.hospitaldevicesystem.service.UserService;
+import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -44,6 +46,25 @@ public class UserController {
         Integer messageNum = messageService.queryAllByUserIdAndState(result.getId(), MessageStateEnums.WAIT_READ.getState()).size();
         result.setMessageNum(messageNum);
         return RestResponse.ok(result);
+    }
+
+    /**
+     * 修改用户信息
+     */
+    @PostMapping("/updateById")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAnyRole('ROLE_KEUSER') or hasAnyRole('ROLE_KPJKEUSER') or hasAnyRole('ROLE_USER')")
+    public RestResponse updateById(Principal principal, @RequestBody Map<String,String> userInfo){
+        User user = userService.queryById(Long.valueOf(userInfo.get("id")));
+        user.setPassword(userInfo.get("password")==null?user.getPassword():userInfo.get("password"));
+        user.setTel(userInfo.get("tel")==null?user.getTel():userInfo.get("tel"));
+        user.setHeadUrl(userInfo.get("headUrl")==null?user.getHeadUrl():userInfo.get("headUrl"));
+        user.setAddress(userInfo.get("address")==null?user.getAddress():userInfo.get("address"));
+        user.setDepartment(userInfo.get("department")==null?user.getDepartment():userInfo.get("department"));
+        user.setHospitalId(userInfo.get("hospitalId")==null?user.getHospitalId():Long.valueOf(userInfo.get("hospitalId")));
+        user.setUpdateTime(MyDateUtils.GetNowDate());
+        user.setUpdateName(principal.getName());
+        List<UserModel> result = userService.queryAllByRole(userInfo.get("id"));
+        return RestResponse.ok(result).msg("请求成功");
     }
 
 }
