@@ -2,6 +2,7 @@ package cn.pch.hospitaldevicesystem.controller;
 
 import cn.pch.hospitaldevicesystem.model.request.ApplyCreateModel;
 import cn.pch.hospitaldevicesystem.service.ApplyService;
+import cn.pch.hospitaldevicesystem.service.UserService;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,13 +22,24 @@ import java.util.Map;
 public class ApplyController {
     @Resource
     ApplyService applyService;
+    @Resource
+    UserService userService;
 
+    /**
+     * 创建一个申请单也就是故障申报
+     */
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_YHUSER')")
-    public RestResponse createApply(Principal principal, @RequestBody Map<String,String> tempMapModel){
+    public RestResponse createApply(Principal principal, @RequestBody Map<String,String> applyMapModel){
         ApplyCreateModel applyCreateModel = new ApplyCreateModel();
-
-        System.out.println(principal.getName());
-        return RestResponse.ok().msg("请求成功");
+        applyCreateModel.setContent(applyMapModel.get("content"));
+        applyCreateModel.setState(Integer.valueOf(applyMapModel.get("state")));
+        applyCreateModel.setDeviceId(Long.valueOf(applyMapModel.get("deviceId")));
+        applyCreateModel.setFromHospitalId(Long.valueOf(applyMapModel.get("fromHospitalId")));
+        applyCreateModel.setFromType(Integer.valueOf(applyMapModel.get("fromType")));
+        applyCreateModel.setFromUserId(userService.queryIdByUserName(principal.getName()));
+        applyCreateModel.setCreateName(principal.getName());
+        applyService.insertOneApply(applyCreateModel);
+        return RestResponse.ok().msg("申请成功");
     }
 }

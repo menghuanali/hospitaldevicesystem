@@ -34,6 +34,11 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
+    public Apply updateApply(Apply apply) {
+        return applyRepository.save(apply);
+    }
+
+    @Override
     public List<ApplyModel> queryAll() {
         List<Apply> dbResultLsit = applyRepository.findAll();
         List<ApplyModel> result = dbResultLsit.stream().map(apply -> {
@@ -56,13 +61,11 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public ApplyModel queryById(Long id) {
+    public Apply queryById(Long id) {
         Optional<Apply> dbApply = applyRepository.findById(id);
         if(dbApply.isPresent()){
             Apply apply = dbApply.get();
-            ApplyModel result = new ApplyModel();
-            BeanUtil.copyProperties(apply,result);
-            return result;
+            return apply;
         }else{
             return null;
         }

@@ -12,6 +12,7 @@ import lombok.Data;
 @Data
 public class ApplyCreateModel extends BaseModel {
     private Long deviceId;
+    private Integer state;
     private String content;
     private Long fromUserId;
     private Long fromHospitalId;

@@ -37,4 +37,8 @@ public interface UserService {
     根据用户名查询用户信息
     */
     UserModel queryByUserName(String username);
+    /*
+    根据用户名查询用户Id
+    */
+    Long queryIdByUserName(String username);
 }

@@ -14,10 +14,14 @@ import java.util.List;
  **/
 public interface ApplyService {
     /*
-        保存修改申请单
+        保存申请单
     */
     Apply insertOneApply(ApplyCreateModel apply);
 
+    /*
+    修改申请单
+    */
+    Apply updateApply(Apply apply);
     /*
         得到所有的申请单
     */
@@ -31,7 +35,7 @@ public interface ApplyService {
     /*
         根据主键的到一个申请单
     */
-    ApplyModel queryById(Long id);
+    Apply queryById(Long id);
     /*
         根据id删除
     */

@@ -35,6 +35,11 @@ public class Audit {
     */
     @Column(name = "state",nullable=false,length=11)
     private Integer state;
+    /*
+    审核的留言 比如拒绝理由
+    */
+    @Column(name = "reason",nullable=true,length=300)
+    private String reason;
 
     /*
     下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类

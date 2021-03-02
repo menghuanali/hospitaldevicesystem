@@ -35,7 +35,7 @@ public class Order {
         订单关连的设备id
     */
     @Column(name = "device_id",nullable=false,length=21)
-    private Long DeviceId;
+    private Long deviceId;
 
 
     /*
@@ -57,7 +57,7 @@ public class Order {
     private Long hospitalId;
 
     /*
-        订单的类型 具体看OrderTypeEnums
+        订单的类型 具体看ApplyTypeEnums
     */
     @Column(name = "type",nullable=false,length=11)
     private Integer type;

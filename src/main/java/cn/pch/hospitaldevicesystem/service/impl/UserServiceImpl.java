@@ -84,4 +84,14 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public Long queryIdByUserName(String username) {
+        List<User> dbResult = userRepository.findAllByUsername(username);
+        if(dbResult.size()==1){
+            return dbResult.get(0).getId();
+        }else {
+            return null;
+        }
+    }
 }
