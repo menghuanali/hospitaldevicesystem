@@ -8,7 +8,8 @@ package cn.pch.hospitaldevicesystem.enums;
  **/
 public enum ApplyTypeEnums {
     COMEFROM_SYSTEM("来自管理系统",1),
-    COMEFROM_APP("来自移动APP",2);
+    COMEFROM_APP("来自移动APP",2),
+    COMEFROM_PHONE("来自电话订单",3);
 
     private final String name;
     private final Integer state;

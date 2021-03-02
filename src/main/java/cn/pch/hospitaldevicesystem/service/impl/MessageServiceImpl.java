@@ -49,4 +49,9 @@ public class MessageServiceImpl implements MessageService {
     public void removeByid(Long id) {
         messageRepository.deleteById(id);
     }
+
+    @Override
+    public List<Message> queryAllByCreateName(String createName) {
+        return messageRepository.findAllByCreateName(createName);
+    }
 }

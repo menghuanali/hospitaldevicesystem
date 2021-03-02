@@ -31,4 +31,8 @@ public interface MessageService {
         根据id删除
     */
     void removeByid(Long id);
+    /*
+        得到客服发的所有短信 前端去分类吧
+    */
+    List<Message> queryAllByCreateName(String createName);
 }

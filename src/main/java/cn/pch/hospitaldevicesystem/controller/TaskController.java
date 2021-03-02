@@ -15,7 +15,7 @@ public class TaskController {
 //    //必须有全部的权限才可以访问
 //    @PreAuthorize("hasRole('ROLE_admin') and hasAnyRole('ROLE_user')")
 //    //至少有一个即可访问
-//    @PreAuthorize("hasRole('ROLE_admin') or hasAnyRole('ROLE_user')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_YHUSER')")
 
     @GetMapping
     public String listTasks(){
