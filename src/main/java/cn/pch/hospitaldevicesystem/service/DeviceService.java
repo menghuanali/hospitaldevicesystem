@@ -30,4 +30,8 @@ public interface DeviceService {
         根据id删除
     */
     void removeByid(Long id);
+    /*
+        得到所属医院的所有设备
+    */
+    List<Device> queryAllDeviceByHospitalId(Long hospitalId);
 }

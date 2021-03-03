@@ -124,4 +124,12 @@ public class DeviceController {
         System.out.println(realPath+"\\"+fileName);
         return RestResponse.ok("static/images/devices/"+fileName);
     }
+
+    /*
+        得到某个医院的所以设备
+    */
+    @PostMapping("/getAllByHospitalId")
+    public RestResponse getAllByHospitalId(@RequestBody Map<String,String> deviceInfo){
+        return RestResponse.ok(deviceService.queryAllDeviceByHospitalId(Long.valueOf(deviceInfo.get("hospitalId"))));
+    }
 }

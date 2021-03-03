@@ -67,4 +67,10 @@ public class DeviceServiceImpl implements DeviceService {
     public void removeByid(Long id) {
         deviceRepository.deleteById(id);
     }
+
+    @Override
+    public List<Device> queryAllDeviceByHospitalId(Long hospitalId) {
+        List<Device> dbResultLsit = deviceRepository.findAllByHospitalId(hospitalId);
+        return dbResultLsit;
+    }
 }

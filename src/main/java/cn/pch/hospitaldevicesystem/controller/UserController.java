@@ -2,14 +2,14 @@ package cn.pch.hospitaldevicesystem.controller;
 
 import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
-import cn.pch.hospitaldevicesystem.model.JwtUser;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
 import cn.pch.hospitaldevicesystem.service.MessageService;
 import cn.pch.hospitaldevicesystem.service.UserService;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
+import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +23,7 @@ import java.util.Map;
 /**
  * Created by 潘成花 on 2021/01/23
  */
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -39,8 +40,23 @@ public class UserController {
         return RestResponse.ok(result).msg("请求成功");
     }
 
+    /*
+        检查是否有此人
+    */
+    @PostMapping("/checkUserByName")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAnyRole('ROLE_KEUSER') or hasAnyRole('ROLE_KPJKEUSER')")
+    public RestResponse checkUserByName(@RequestBody Map<String,String> userInfo){
+        log.info(":{} ", JSON.toJSONString(userInfo));
+        UserModel result = userService.queryByUserName(userInfo.get("name"));
+        if(result==null){
+            return RestResponse.ok().msg("0");
+        }else{
+            return RestResponse.ok().msg(String.valueOf(result.getId()));
+        }
+    }
+
     @PostMapping("/getUserInfo")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasAnyRole('ROLE_KEUSER') or hasAnyRole('ROLE_KPJKEUSER') or hasAnyRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER') or hasRole('ROLE_USER')")
     public RestResponse getUserInfoByToken(Principal principal){
         UserModel result = userService.queryByUserName(principal.getName());
         Integer messageNum = messageService.queryAllByUserIdAndState(result.getId(), MessageStateEnums.WAIT_READ.getState()).size();

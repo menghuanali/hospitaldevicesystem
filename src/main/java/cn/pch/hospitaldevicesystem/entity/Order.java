@@ -64,7 +64,7 @@ public class Order {
     /*
     预计到场修理时间
     */
-    @Column(name = "come_time",nullable=false,length=100)
+    @Column(name = "come_time",nullable=true,length=100)
     private String comeTime;
     /*
     下面是公共部分 由于jpa继承很麻烦 所以不用继承的父类
