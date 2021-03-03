@@ -42,4 +42,12 @@ public interface OrderService {
         根据id删除
     */
     void removeByid(Long id);
+    /*
+        根据条件查询订单
+    */
+    List<OrderModel> queryAllByExample(Order order);
+    /*
+    查询出1256的状态下的订单
+    */
+    List<OrderModel> queryProcessOrder();
 }

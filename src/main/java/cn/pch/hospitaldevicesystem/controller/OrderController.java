@@ -11,7 +11,6 @@ import cn.pch.hospitaldevicesystem.service.OrderLogService;
 import cn.pch.hospitaldevicesystem.service.OrderService;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,7 +65,29 @@ public class OrderController {
         messageService.insertOneMessage(message);
         return RestResponse.ok("电话新增订单成功");
     }
+    /*
+        查询出指定条件的订单
+    */
+    @PostMapping("/listOrder")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse listOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
+        Order order = new Order();
+        order.setState(orderInfo.get("state")==null?null:Integer.valueOf(orderInfo.get("state")));
+        order.setDeviceId(orderInfo.get("deviceId")==null?null:Long.valueOf(orderInfo.get("deviceId")));
+        order.setDoctorUserId(orderInfo.get("doctorUserId")==null?null:Long.valueOf(orderInfo.get("doctorUserId")));
+        order.setWorkerUserId(orderInfo.get("workerUserId")==null?null:Long.valueOf(orderInfo.get("workerUserId")));
+        order.setHospitalId(orderInfo.get("hospitalId")==null?null:Long.valueOf(orderInfo.get("hospitalId")));
+        order.setCreateTime(orderInfo.get("createTime")==null?null:orderInfo.get("createTime"));
+        order.setCreateName(orderInfo.get("createName")==null?null:orderInfo.get("createName"));
+        return RestResponse.ok(orderService.queryAllByExample(order));
+    }
 
-
-
+    /*
+    订单处理 查询出指定1 2 5 6 状态下的订单
+    */
+    @PostMapping("/listProcessOrder")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse listProcessOrder(){
+        return RestResponse.ok(orderService.queryProcessOrder());
+    }
 }

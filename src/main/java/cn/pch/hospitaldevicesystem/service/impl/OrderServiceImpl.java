@@ -5,6 +5,7 @@ import cn.pch.hospitaldevicesystem.entity.Order;
 import cn.pch.hospitaldevicesystem.model.response.OrderModel;
 import cn.pch.hospitaldevicesystem.repository.OrderRepository;
 import cn.pch.hospitaldevicesystem.service.OrderService;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -85,6 +86,29 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void removeByid(Long id) {
         orderRepository.deleteById(id);
+    }
+
+    @Override
+    public List<OrderModel> queryAllByExample(Order orderExample) {
+        Example<Order> example = Example.of(orderExample);
+        List<Order> dbResultLsit = orderRepository.findAll(example);
+        List<OrderModel> result = dbResultLsit.stream().map(order -> {
+            OrderModel orderModel = new OrderModel();
+            BeanUtil.copyProperties(order,orderModel);
+            return orderModel;
+        }).collect(Collectors.toList());
+        return result;
+    }
+
+    @Override
+    public List<OrderModel> queryProcessOrder() {
+        List<Order> dbResultLsit = orderRepository.findALLProcessOrder();
+        List<OrderModel> result = dbResultLsit.stream().map(order -> {
+            OrderModel orderModel = new OrderModel();
+            BeanUtil.copyProperties(order,orderModel);
+            return orderModel;
+        }).collect(Collectors.toList());
+        return result;
     }
 
 }

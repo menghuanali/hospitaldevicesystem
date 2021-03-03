@@ -11,7 +11,8 @@ public enum OrderStateEnums {
     PROCESSING("维修人员处理中",2),
     WAIT_OPINION("维修人员处理完成,待评价",3),
     COMPLETE("评价完成，已结单",4),
-    OTHER("其他异常状态，请联系管理员",5);
+    DETAL("订单延误",5),
+    OTHER("其他异常状态，请联系管理员",6);
 
     private final String name;
     private final Integer state;

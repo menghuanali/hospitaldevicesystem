@@ -18,7 +18,7 @@ public class OrderModel extends BaseModel{
     /*
         订单关连的设备id
     */
-    private Long DeviceId;
+    private Long deviceId;
     /*
         哪个医护人员申请的订单
     */
