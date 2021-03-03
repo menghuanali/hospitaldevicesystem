@@ -10,8 +10,8 @@ public enum RoleEnums {
     ROLE_ADMIN("管理员","ROLE_ADMIN"),
     ROLE_YHUSER("医护人员","ROLE_YHUSER"),
     ROLE_WXUSER("维修人员","ROLE_WXUSER"),
-    ROLE_KEUSER("普通客服人员","ROLE_KEUSER"),
-    ROLE_KPJKEUSER("可评价客服人员","ROLE_KPJKEUSER"),
+    ROLE_KEUSER("普通客服人员","ROLE_KEUSER"), //只订单添加权限
+    ROLE_KPJKEUSER("可评价客服人员","ROLE_KPJKEUSER"),//客服人员可评价的权限和添加权限
     ROLE_USER("访客人员","ROLE_USER");
 
     private final String name;
