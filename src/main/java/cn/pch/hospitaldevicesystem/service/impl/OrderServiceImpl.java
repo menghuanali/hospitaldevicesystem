@@ -2,9 +2,14 @@ package cn.pch.hospitaldevicesystem.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.pch.hospitaldevicesystem.entity.Order;
+import cn.pch.hospitaldevicesystem.enums.ApplyTypeEnums;
+import cn.pch.hospitaldevicesystem.enums.OrderStateEnums;
 import cn.pch.hospitaldevicesystem.model.response.OrderModel;
 import cn.pch.hospitaldevicesystem.repository.OrderRepository;
+import cn.pch.hospitaldevicesystem.service.DeviceService;
+import cn.pch.hospitaldevicesystem.service.HospitalService;
 import cn.pch.hospitaldevicesystem.service.OrderService;
+import cn.pch.hospitaldevicesystem.service.UserService;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +28,12 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     @Resource
     OrderRepository orderRepository;
+    @Resource
+    UserService userService;
+    @Resource
+    DeviceService deviceService;
+    @Resource
+    HospitalService hospitalService;
     @Override
     public List<OrderModel> queryAll() {
         List<Order> dbResultLsit =  orderRepository.findAll();
@@ -106,6 +117,14 @@ public class OrderServiceImpl implements OrderService {
         List<OrderModel> result = dbResultLsit.stream().map(order -> {
             OrderModel orderModel = new OrderModel();
             BeanUtil.copyProperties(order,orderModel);
+            if(orderModel.getWorkerUserId()!=null){
+                orderModel.setWorkerUserName(userService.queryById(orderModel.getWorkerUserId()).getUsername());
+            }
+            orderModel.setDeviceName(deviceService.queryByid(orderModel.getDeviceId()).getName());
+            orderModel.setDoctorUserName(userService.queryById(orderModel.getDoctorUserId()).getUsername());
+            orderModel.setHospitalName(hospitalService.queryByid(orderModel.getHospitalId()).getName());
+            orderModel.setTypeName(ApplyTypeEnums.of(orderModel.getState()).getName());
+            orderModel.setStateName(OrderStateEnums.of(orderModel.getState()).getName());
             return orderModel;
         }).collect(Collectors.toList());
         return result;

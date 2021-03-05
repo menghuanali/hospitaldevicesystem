@@ -26,7 +26,7 @@ public class HospitalTest extends TmallApplicationTests{
             hospital.setId(hospitalEnums.getId());
             hospital.setName(hospitalEnums.getName());
             hospital.setAddress("XX省XX市XX地区XX");
-            hospital.setPictureUrl("/static/images/hospital/"+hospitalEnums.getId()+".jpg");
+            hospital.setPictureUrl("static/images/hospital/"+hospitalEnums.getId()+".jpg");
             hospital.setTel("9999120");
             hospital.setCreateName("系统");
             hospital.setCreateTime(MyDateUtils.GetNowDate());
