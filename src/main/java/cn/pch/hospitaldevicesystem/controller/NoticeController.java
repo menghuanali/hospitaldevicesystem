@@ -71,8 +71,10 @@ public class NoticeController {
         notice.setPictureUrl(noticeInfo.get("pictureUrl"));
         notice.setCreateName("系统");
         notice.setCreateTime(MyDateUtils.GetNowDate());
-        noticeService.insertOneNotice(notice);
-        return RestResponse.ok("发布成功");
+        Notice newNotice = noticeService.insertOneNotice(notice);
+        return RestResponse.ok(newNotice);
+        //return RestResponse.ok("发布成功");
+
     }
 
     /*
