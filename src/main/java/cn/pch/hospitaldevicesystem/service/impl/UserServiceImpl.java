@@ -2,6 +2,7 @@ package cn.pch.hospitaldevicesystem.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.pch.hospitaldevicesystem.entity.User;
+import cn.pch.hospitaldevicesystem.enums.HospitalEnums;
 import cn.pch.hospitaldevicesystem.enums.RoleEnums;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
 import cn.pch.hospitaldevicesystem.repository.UserRepository;
@@ -23,12 +24,28 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     @Resource
     UserRepository userRepository;
+
+    @Override
+    public List<UserModel> queryAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserModel> result = users.stream().map(user -> {
+            UserModel userModel = new UserModel();
+            BeanUtil.copyProperties(user,userModel);
+            userModel.setHospitalName(HospitalEnums.of(userModel.getHospitalId()).getName());
+            userModel.setRoleName(RoleEnums.of(userModel.getRole()).getName());
+            return userModel;
+        }).collect(Collectors.toList());
+        return result;
+    }
+
     @Override
     public List<UserModel> queryAllByRole(String role) {
         List<User> users = userRepository.findAllByRoleAndDelete(role,0);
         List<UserModel> result = users.stream().map(user -> {
             UserModel userModel = new UserModel();
             BeanUtil.copyProperties(user,userModel);
+            userModel.setHospitalName(HospitalEnums.of(userModel.getHospitalId()).getName());
+            userModel.setRoleName(RoleEnums.of(userModel.getRole()).getName());
             return userModel;
         }).collect(Collectors.toList());
         return result;
