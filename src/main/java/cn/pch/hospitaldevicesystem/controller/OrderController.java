@@ -90,4 +90,39 @@ public class OrderController {
     public RestResponse listProcessOrder(){
         return RestResponse.ok(orderService.queryProcessOrder());
     }
+
+    /*
+        分派订单 调单
+    */
+    @PostMapping("/portionOrder")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse portionOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
+        Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
+        order.setWorkerUserId(Long.valueOf(orderInfo.get("workerUserId")));
+        order.setState(OrderStateEnums.PROCESSING.getState());//维修人员处理中
+        orderService.insertOneOrder(order);
+        return RestResponse.ok("处理成功");
+    }
+
+    /*
+        延误订单
+    */
+    @PostMapping("/delayOrder")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse delayOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
+        Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
+        order.setState(OrderStateEnums.DETAL.getState());//维修人员处理中
+        orderService.insertOneOrder(order);
+        return RestResponse.ok("延误成功");
+    }
+
+    /*
+    删除订单
+    */
+    @PostMapping("/deleteOrder")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse deleteOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
+        orderService.removeByid(Long.valueOf(orderInfo.get("id")));
+        return RestResponse.ok("删除成功");
+    }
 }

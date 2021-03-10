@@ -13,6 +13,10 @@ import java.util.List;
  **/
 public interface UserService {
     /*
+    得到所有用户信息
+     */
+    List<UserModel> queryAllUsers();
+    /*
         得到所有用户，用户权限为role
     */
     List<UserModel> queryAllByRole(String role);

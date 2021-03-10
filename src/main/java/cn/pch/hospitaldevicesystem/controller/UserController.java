@@ -22,6 +22,7 @@ import java.util.Map;
 
 /**
  * Created by 潘成花 on 2021/01/23
+ * @author ccxm
  */
 @Slf4j
 @RestController
@@ -32,15 +33,26 @@ public class UserController {
     UserService userService;
     @Resource
     MessageService messageService;
-
+/**
+人员审核和人员列表
+人员审核的参数：role=ROLE_USER
+ */
     @PostMapping("/getUsersByRole")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RestResponse getUsersByRole(@RequestBody Map<String,String> registerUser){
         List<UserModel> result = userService.queryAllByRole(registerUser.get("role"));
         return RestResponse.ok(result).msg("请求成功");
     }
-
-    /*
+/**
+所有人员列表
+ */
+    @PostMapping("/getAllUsers")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse getAllUsers(){
+        List<UserModel> result = userService.queryAllUsers();
+        return RestResponse.ok(result).msg("请求成功");
+    }
+    /**
         检查是否有此人
     */
     @PostMapping("/checkUserByName")

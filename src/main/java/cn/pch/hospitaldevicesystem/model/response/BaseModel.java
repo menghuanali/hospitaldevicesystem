@@ -18,6 +18,9 @@ public class BaseModel implements Serializable {
     */
     private Long id;
     private String createName;
+    /*
+        创建时间
+    */
     private String createTime;
     private String updateName;
     private String updateTime;
