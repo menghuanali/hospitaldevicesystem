@@ -39,6 +39,10 @@ public interface OrderService {
     */
     Order queryById(Long id);
     /*
+    根据id查找某个订单详情 包括日志信息
+    */
+    OrderModel queryOrderModelById(Long id);
+    /*
         根据id删除
     */
     void removeByid(Long id);

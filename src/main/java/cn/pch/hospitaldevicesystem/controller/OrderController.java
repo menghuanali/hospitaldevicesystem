@@ -60,14 +60,14 @@ public class OrderController {
         order.setCreateTime(MyDateUtils.GetNowDate());
         Order saveOrder = orderService.insertOneOrder(order);
         //保存日志
-        String log = "来自 "+ HospitalEnums.of(Long.valueOf(orderInfo.get("hospitalId"))) +" 医院工作人员ID为: "+orderInfo.get("doctorUserId")+
-                " 通过电话订单说明并创建了维修单号: "+saveOrder.getId()+"等待派单";
-        orderLogService.insertOneLog(order.getId(),log,principal.getName());
+        String log = "来自 "+ HospitalEnums.of(Long.valueOf(orderInfo.get("hospitalId"))).getName() +" 医院工作人员ID为: "+orderInfo.get("doctorUserId")+
+                " 通过电话订单说明并创建了维修订单号: "+saveOrder.getId()+"等待派单";
+        orderLogService.insertOneLog(order.getId(),principal.getName(),log);
         //给客户发消息说明电话订单申请成功
         Message message = new Message();
         message.setUserId(Long.valueOf(orderInfo.get("doctorUserId")));
         message.setState(MessageStateEnums.WAIT_READ.getState());
-        String msg = "很高兴接到您的来电，你的故障申报已经通过电话申请成功，维修单号为:"+saveOrder.getId()+"将尽快为您解决问题";
+        String msg = "很高兴接到您的来电，你的故障申报已经通过电话申请成功，维修订单号为:"+saveOrder.getId()+"将尽快为您解决问题";
         message.setContent(msg);
         message.setCreateName(principal.getName());
         message.setCreateTime(MyDateUtils.GetNowDate());
@@ -89,7 +89,7 @@ public class OrderController {
         order.setCreateName(StrUtil.hasBlank(orderInfo.get("createName"))?null:orderInfo.get("createName"));
         order.setDelete(0);
         List<OrderModel> result = orderService.queryAllByExample(order);
-        log.info(":{} ", JSON.toJSONString(result));
+        log.info("查询到的:{} ", JSON.toJSONString(result));
         if(orderInfo.get("startTime")==null){
             return RestResponse.ok(result);
         }else{
@@ -119,6 +119,25 @@ public class OrderController {
         order.setWorkerUserId(Long.valueOf(orderInfo.get("workerUserId")));
         order.setState(OrderStateEnums.PROCESSING.getState());//维修人员处理中
         orderService.insertOneOrder(order);
+        //保存日志
+        log.info("分派调单详情:{} ", JSON.toJSONString(orderInfo));
+        String log = "";
+        if(!StrUtil.hasBlank(orderInfo.get("portiondialogVisible"))&&orderInfo.get("portiondialogVisible").equals("true")){
+            log = "订单ID "+ order.getId() +" 分派给 "+orderInfo.get("workerUserName")+" 等待维修中";
+        }else{
+            log = "订单ID "+ order.getId() +" 调度给 "+orderInfo.get("workerUserName")+" 等待维修中";
+        }
+        orderLogService.insertOneLog(order.getId(),principal.getName(),log);
+        //给客户发消息说明
+        Message message = new Message();
+        message.setUserId(order.getDoctorUserId());
+        message.setState(MessageStateEnums.WAIT_READ.getState());
+        String msg = "你申请的维修订单号为:"+order.getId()+"已经分派了维修师傅："+orderInfo.get("workerUserName")+" 请耐心等待";
+        message.setContent(msg);
+        message.setCreateName(principal.getName());
+        message.setCreateTime(MyDateUtils.GetNowDate());
+        messageService.insertOneMessage(message);
+
         return RestResponse.ok("处理成功");
     }
 
@@ -131,6 +150,18 @@ public class OrderController {
         Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
         order.setState(OrderStateEnums.DETAL.getState());//维修人员处理中
         orderService.insertOneOrder(order);
+        //保存日志
+        String log  = "订单ID "+ order.getId() +" 被延误 ";
+        orderLogService.insertOneLog(order.getId(),principal.getName(),log);
+        //给客户发消息说明订单延误
+        Message message = new Message();
+        message.setUserId(order.getDoctorUserId());
+        message.setState(MessageStateEnums.WAIT_READ.getState());
+        String msg = "你申请的维修订单号为:"+order.getId()+"非常抱歉延误了!请耐心等待";
+        message.setContent(msg);
+        message.setCreateName(principal.getName());
+        message.setCreateTime(MyDateUtils.GetNowDate());
+        messageService.insertOneMessage(message);
         return RestResponse.ok("延误成功");
     }
 
@@ -140,7 +171,20 @@ public class OrderController {
     @PostMapping("/deleteOrder")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RestResponse deleteOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
+        Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
         orderService.removeByid(Long.valueOf(orderInfo.get("id")));
+        //保存日志
+        String log  = "订单ID "+ orderInfo.get("id") +" 被删除 ";
+        orderLogService.insertOneLog(Long.valueOf(orderInfo.get("id")),principal.getName(),log);
+        //给客户发消息说明订单延误
+        Message message = new Message();
+        message.setUserId(order.getDoctorUserId());
+        message.setState(MessageStateEnums.WAIT_READ.getState());
+        String msg = "你申请的维修订单号为:"+order.getId()+"已经被删除，如有疑问请联系客服或者重新申请。";
+        message.setContent(msg);
+        message.setCreateName(principal.getName());
+        message.setCreateTime(MyDateUtils.GetNowDate());
+        messageService.insertOneMessage(message);
         return RestResponse.ok("删除成功");
     }
 
@@ -158,6 +202,13 @@ public class OrderController {
         return RestResponse.ok(result);
     }
 
-
-
+    /*
+        订单详情
+    */
+    @PostMapping("/getOrderDetails")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse getOrderDetails(@RequestBody Map<String,String> orderInfo){
+        OrderModel orderModel = orderService.queryOrderModelById(Long.valueOf(orderInfo.get("id")));
+        return RestResponse.ok(orderModel);
+    }
 }

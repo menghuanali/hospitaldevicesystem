@@ -6,10 +6,7 @@ import cn.pch.hospitaldevicesystem.enums.ApplyTypeEnums;
 import cn.pch.hospitaldevicesystem.enums.OrderStateEnums;
 import cn.pch.hospitaldevicesystem.model.response.OrderModel;
 import cn.pch.hospitaldevicesystem.repository.OrderRepository;
-import cn.pch.hospitaldevicesystem.service.DeviceService;
-import cn.pch.hospitaldevicesystem.service.HospitalService;
-import cn.pch.hospitaldevicesystem.service.OrderService;
-import cn.pch.hospitaldevicesystem.service.UserService;
+import cn.pch.hospitaldevicesystem.service.*;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +31,8 @@ public class OrderServiceImpl implements OrderService {
     DeviceService deviceService;
     @Resource
     HospitalService hospitalService;
+    @Resource
+    OrderLogService orderLogService;
     @Override
     public List<OrderModel> queryAll() {
         List<Order> dbResultLsit =  orderRepository.findAll();
@@ -95,6 +94,24 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderModel queryOrderModelById(Long id) {
+        Order order = queryById(id);
+        OrderModel orderModel = new OrderModel();
+        BeanUtil.copyProperties(order,orderModel);
+        if(orderModel.getWorkerUserId()!=null){
+            orderModel.setWorkerUserName(userService.queryById(orderModel.getWorkerUserId()).getUsername());
+        }
+        orderModel.setDeviceName(deviceService.queryByid(orderModel.getDeviceId()).getName());
+        orderModel.setDoctorUserName(userService.queryById(orderModel.getDoctorUserId()).getUsername());
+        orderModel.setHospitalName(hospitalService.queryByid(orderModel.getHospitalId()).getName());
+        orderModel.setTypeName(ApplyTypeEnums.of(orderModel.getType()).getName());
+        orderModel.setStateName(OrderStateEnums.of(orderModel.getState()).getName());
+        //写入日志信息
+        orderModel.setLogs(orderLogService.queryAllByOrderId(id));
+        return orderModel;
+    }
+
+    @Override
     public void removeByid(Long id) {
         orderRepository.deleteById(id);
     }
@@ -112,7 +129,7 @@ public class OrderServiceImpl implements OrderService {
             orderModel.setDeviceName(deviceService.queryByid(orderModel.getDeviceId()).getName());
             orderModel.setDoctorUserName(userService.queryById(orderModel.getDoctorUserId()).getUsername());
             orderModel.setHospitalName(hospitalService.queryByid(orderModel.getHospitalId()).getName());
-            orderModel.setTypeName(ApplyTypeEnums.of(orderModel.getState()).getName());
+            orderModel.setTypeName(ApplyTypeEnums.of(orderModel.getType()).getName());
             orderModel.setStateName(OrderStateEnums.of(orderModel.getState()).getName());
             return orderModel;
         }).collect(Collectors.toList());
@@ -131,7 +148,7 @@ public class OrderServiceImpl implements OrderService {
             orderModel.setDeviceName(deviceService.queryByid(orderModel.getDeviceId()).getName());
             orderModel.setDoctorUserName(userService.queryById(orderModel.getDoctorUserId()).getUsername());
             orderModel.setHospitalName(hospitalService.queryByid(orderModel.getHospitalId()).getName());
-            orderModel.setTypeName(ApplyTypeEnums.of(orderModel.getState()).getName());
+            orderModel.setTypeName(ApplyTypeEnums.of(orderModel.getType()).getName());
             orderModel.setStateName(OrderStateEnums.of(orderModel.getState()).getName());
             return orderModel;
         }).collect(Collectors.toList());

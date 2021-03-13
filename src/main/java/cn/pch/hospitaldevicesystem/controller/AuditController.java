@@ -1,11 +1,13 @@
 package cn.pch.hospitaldevicesystem.controller;
 
-import cn.pch.hospitaldevicesystem.entity.*;
+import cn.pch.hospitaldevicesystem.entity.Apply;
+import cn.pch.hospitaldevicesystem.entity.Audit;
+import cn.pch.hospitaldevicesystem.entity.Message;
+import cn.pch.hospitaldevicesystem.entity.Order;
 import cn.pch.hospitaldevicesystem.enums.ApplyStateEnums;
 import cn.pch.hospitaldevicesystem.enums.HospitalEnums;
 import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
 import cn.pch.hospitaldevicesystem.enums.OrderStateEnums;
-import cn.pch.hospitaldevicesystem.model.response.ApplyModel;
 import cn.pch.hospitaldevicesystem.service.*;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
@@ -70,7 +72,7 @@ public class AuditController {
          //保存日志
          String log = "来自 "+ HospitalEnums.of(Long.valueOf(auditInfo.get("hospitalId"))) +" 医院工作人员ID为: "+auditInfo.get("doctorUserId")+
                  " 的申请单已经审核通过并创建了维修单号: "+saveOrder.getId()+"等待派单";
-        orderLogService.insertOneLog(order.getId(),log,principal.getName());
+        orderLogService.insertOneLog(order.getId(),principal.getName(),log);
         //给客户发消息说明审核通过
         Message message = new Message();
         message.setUserId(Long.valueOf(auditInfo.get("doctorUserId")));

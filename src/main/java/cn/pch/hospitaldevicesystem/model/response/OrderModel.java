@@ -1,6 +1,9 @@
 package cn.pch.hospitaldevicesystem.model.response;
 
+import cn.pch.hospitaldevicesystem.entity.OrderLog;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * @program: hospitaldevicesystem
@@ -63,4 +66,8 @@ public class OrderModel extends BaseModel{
     预计到场修理时间
     */
     private String comeTime;
+    /*
+        日志信息
+    */
+    private List<OrderLog> logs;
 }
