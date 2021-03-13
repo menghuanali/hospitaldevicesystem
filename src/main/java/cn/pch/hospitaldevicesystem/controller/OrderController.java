@@ -1,16 +1,21 @@
 package cn.pch.hospitaldevicesystem.controller;
 
+import cn.hutool.core.util.EnumUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.pch.hospitaldevicesystem.entity.Message;
 import cn.pch.hospitaldevicesystem.entity.Order;
 import cn.pch.hospitaldevicesystem.enums.ApplyTypeEnums;
 import cn.pch.hospitaldevicesystem.enums.HospitalEnums;
 import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
 import cn.pch.hospitaldevicesystem.enums.OrderStateEnums;
+import cn.pch.hospitaldevicesystem.model.response.OrderModel;
 import cn.pch.hospitaldevicesystem.service.MessageService;
 import cn.pch.hospitaldevicesystem.service.OrderLogService;
 import cn.pch.hospitaldevicesystem.service.OrderService;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
+import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,11 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by 潘成花 on 2021/01/23
  */
+@Slf4j
 @RestController
 @RequestMapping("/order")
 public class OrderController {
@@ -72,14 +81,23 @@ public class OrderController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RestResponse listOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
         Order order = new Order();
-        order.setState(orderInfo.get("state")==null?null:Integer.valueOf(orderInfo.get("state")));
-        order.setDeviceId(orderInfo.get("deviceId")==null?null:Long.valueOf(orderInfo.get("deviceId")));
-        order.setDoctorUserId(orderInfo.get("doctorUserId")==null?null:Long.valueOf(orderInfo.get("doctorUserId")));
-        order.setWorkerUserId(orderInfo.get("workerUserId")==null?null:Long.valueOf(orderInfo.get("workerUserId")));
-        order.setHospitalId(orderInfo.get("hospitalId")==null?null:Long.valueOf(orderInfo.get("hospitalId")));
-        order.setCreateTime(orderInfo.get("createTime")==null?null:orderInfo.get("createTime"));
-        order.setCreateName(orderInfo.get("createName")==null?null:orderInfo.get("createName"));
-        return RestResponse.ok(orderService.queryAllByExample(order));
+        order.setState(StrUtil.hasBlank(orderInfo.get("state"))?null:Integer.valueOf(orderInfo.get("state")));
+        order.setId(StrUtil.hasBlank(orderInfo.get("orderId"))?null:Long.valueOf(orderInfo.get("orderId")));
+        order.setDoctorUserId(StrUtil.hasBlank(orderInfo.get("userId"))?null:Long.valueOf(orderInfo.get("userId")));
+        order.setWorkerUserId(StrUtil.hasBlank(orderInfo.get("workerUserId"))?null:Long.valueOf(orderInfo.get("workerUserId")));
+        order.setHospitalId(StrUtil.hasBlank(orderInfo.get("hospitalId"))?null:Long.valueOf(orderInfo.get("hospitalId")));
+        order.setCreateName(StrUtil.hasBlank(orderInfo.get("createName"))?null:orderInfo.get("createName"));
+        order.setDelete(0);
+        List<OrderModel> result = orderService.queryAllByExample(order);
+        log.info(":{} ", JSON.toJSONString(result));
+        if(orderInfo.get("startTime")==null){
+            return RestResponse.ok(result);
+        }else{
+            result = result.stream().filter(o -> o.getCreateTime().compareTo(orderInfo.get("startTime"))>=0&&o.getCreateTime().compareTo(orderInfo.get("endTime"))<=0).collect(Collectors.toList());
+            log.info("过滤后:{} ", JSON.toJSONString(result));
+            return RestResponse.ok(result);
+        }
+
     }
 
     /*
@@ -125,4 +143,21 @@ public class OrderController {
         orderService.removeByid(Long.valueOf(orderInfo.get("id")));
         return RestResponse.ok("删除成功");
     }
+
+    /*
+    得到订单状态枚举
+    */
+    @PostMapping("/getStateEnums")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse getStateEnums(){
+        List<Object> names = EnumUtil.getFieldValues(OrderStateEnums.class, "name");
+        List<Object> states = EnumUtil.getFieldValues(OrderStateEnums.class, "state");
+        List<Object> result = new ArrayList<>();
+        result.add(names);
+        result.add(states);
+        return RestResponse.ok(result);
+    }
+
+
+
 }

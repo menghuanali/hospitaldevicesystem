@@ -1,5 +1,6 @@
 package cn.pch.hospitaldevicesystem.controller;
 
+import cn.hutool.core.util.StrUtil;
 import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
@@ -83,12 +84,12 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasAnyRole('ROLE_KEUSER') or hasAnyRole('ROLE_KPJKEUSER') or hasAnyRole('ROLE_USER')")
     public RestResponse updateById(Principal principal, @RequestBody Map<String,String> userInfo){
         User user = userService.queryById(Long.valueOf(userInfo.get("id")));
-        user.setPassword(userInfo.get("password")==null?user.getPassword():userInfo.get("password"));
-        user.setTel(userInfo.get("tel")==null?user.getTel():userInfo.get("tel"));
-        user.setHeadUrl(userInfo.get("headUrl")==null?user.getHeadUrl():userInfo.get("headUrl"));
-        user.setAddress(userInfo.get("address")==null?user.getAddress():userInfo.get("address"));
-        user.setDepartment(userInfo.get("department")==null?user.getDepartment():userInfo.get("department"));
-        user.setHospitalId(userInfo.get("hospitalId")==null?user.getHospitalId():Long.valueOf(userInfo.get("hospitalId")));
+        user.setPassword(StrUtil.hasBlank(userInfo.get("password"))?user.getPassword():userInfo.get("password"));
+        user.setTel(StrUtil.hasBlank(userInfo.get("tel"))?user.getTel():userInfo.get("tel"));
+        user.setHeadUrl(StrUtil.hasBlank(userInfo.get("headUrl"))?user.getHeadUrl():userInfo.get("headUrl"));
+        user.setAddress(StrUtil.hasBlank(userInfo.get("address"))?user.getAddress():userInfo.get("address"));
+        user.setDepartment(StrUtil.hasBlank(userInfo.get("department"))?user.getDepartment():userInfo.get("department"));
+        user.setHospitalId(StrUtil.hasBlank(userInfo.get("hospitalId"))?user.getHospitalId():Long.valueOf(userInfo.get("hospitalId")));
         user.setUpdateTime(MyDateUtils.GetNowDate());
         user.setUpdateName(principal.getName());
         List<UserModel> result = userService.queryAllByRole(userInfo.get("id"));

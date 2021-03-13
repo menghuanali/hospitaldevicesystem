@@ -106,6 +106,14 @@ public class OrderServiceImpl implements OrderService {
         List<OrderModel> result = dbResultLsit.stream().map(order -> {
             OrderModel orderModel = new OrderModel();
             BeanUtil.copyProperties(order,orderModel);
+            if(orderModel.getWorkerUserId()!=null){
+                orderModel.setWorkerUserName(userService.queryById(orderModel.getWorkerUserId()).getUsername());
+            }
+            orderModel.setDeviceName(deviceService.queryByid(orderModel.getDeviceId()).getName());
+            orderModel.setDoctorUserName(userService.queryById(orderModel.getDoctorUserId()).getUsername());
+            orderModel.setHospitalName(hospitalService.queryByid(orderModel.getHospitalId()).getName());
+            orderModel.setTypeName(ApplyTypeEnums.of(orderModel.getState()).getName());
+            orderModel.setStateName(OrderStateEnums.of(orderModel.getState()).getName());
             return orderModel;
         }).collect(Collectors.toList());
         return result;
