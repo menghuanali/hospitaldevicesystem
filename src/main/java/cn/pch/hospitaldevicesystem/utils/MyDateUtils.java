@@ -1,5 +1,6 @@
 package cn.pch.hospitaldevicesystem.utils;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 
 import java.util.Date;
@@ -17,4 +18,14 @@ public class MyDateUtils {
     public static String GetNowDate(){
         return DateUtil.now();
     }
+
+    /*
+        得到当前的时间 格式 2021-01-27
+    */
+    public static String GetNowDateRiQi(Integer number){
+        Date date = DateUtil.date();
+        DateTime newDate2 = DateUtil.offsetDay(date, number);
+        return DateUtil.formatDate(newDate2);
+    }
+
 }

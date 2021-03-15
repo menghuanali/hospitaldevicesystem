@@ -26,4 +26,22 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     */
     @Query(value = "select * from myorder where state=1 OR state=2 OR state=5 OR state=6 ", nativeQuery = true)
     List<Order> findALLProcessOrder();
+
+    /*
+    得到医院分组的各订单总数
+    */
+    @Query(value = "SELECT COUNT( * ) as KeyValue,from_hospital_id as KeyName FROM myorder GROUP BY from_hospital_id", nativeQuery = true)
+    List<Object[]> findOrderNumGroupByHospital();
+
+    /*
+    得到订单分类总数
+    */
+    @Query(value = "SELECT COUNT( * ) as KeyValue,type as KeyName FROM myorder GROUP BY type", nativeQuery = true)
+    List<Object[]> findOrderNumGroupByApplyType();
+
+    /*
+        查询大于某个时间的订单数
+    */
+    List<Order> findByCreateTimeGreaterThanEqual(String time);
+
 }

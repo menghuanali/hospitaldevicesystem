@@ -1,6 +1,7 @@
 package cn.pch.hospitaldevicesystem.service;
 
 import cn.pch.hospitaldevicesystem.entity.Order;
+import cn.pch.hospitaldevicesystem.model.response.OrderInfoModel;
 import cn.pch.hospitaldevicesystem.model.response.OrderModel;
 
 import java.util.List;
@@ -54,4 +55,16 @@ public interface OrderService {
     查询出1256的状态下的订单
     */
     List<OrderModel> queryProcessOrder();
+    /*
+        得到医院分组的各订单总数
+    */
+    List<OrderInfoModel> queryOrderNumGroupByHospital();
+    /*
+    得到订单分类总数
+    */
+    List<OrderInfoModel> queryOrderNumGroupByApplyType();
+    /*
+        得到一周内的订单数
+    */
+    List<Order> queryOrderNumByTime(String time);
 }

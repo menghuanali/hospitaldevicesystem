@@ -4,13 +4,17 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.pch.hospitaldevicesystem.entity.Order;
 import cn.pch.hospitaldevicesystem.enums.ApplyTypeEnums;
 import cn.pch.hospitaldevicesystem.enums.OrderStateEnums;
+import cn.pch.hospitaldevicesystem.model.response.OrderInfoModel;
 import cn.pch.hospitaldevicesystem.model.response.OrderModel;
 import cn.pch.hospitaldevicesystem.repository.OrderRepository;
 import cn.pch.hospitaldevicesystem.service.*;
+import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,6 +25,7 @@ import java.util.stream.Collectors;
  * @description
  * @date 2021/1/27 17:59
  **/
+@Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
     @Resource
@@ -153,6 +158,40 @@ public class OrderServiceImpl implements OrderService {
             return orderModel;
         }).collect(Collectors.toList());
         return result;
+    }
+
+    @Override
+    public List<OrderInfoModel> queryOrderNumGroupByHospital() {
+        List<Object[]> dbresult = orderRepository.findOrderNumGroupByHospital();
+        List<OrderInfoModel> result = new ArrayList<>();
+        for(int i=0;i<dbresult.size();i++){
+            Object[] obs=dbresult.get(i);
+            OrderInfoModel orderInfoModel = new OrderInfoModel();
+            log.info(":{} ", JSON.toJSONString(obs));
+            orderInfoModel.setKeyValue(Integer.valueOf(obs[0].toString()));
+            orderInfoModel.setKeyName(Integer.valueOf(obs[1].toString()));
+            result.add(orderInfoModel);
+        }
+        return result;
+    }
+
+    @Override
+    public List<OrderInfoModel> queryOrderNumGroupByApplyType() {
+        List<Object[]> dbresult = orderRepository.findOrderNumGroupByApplyType();
+        List<OrderInfoModel> result = new ArrayList<>();
+        for(int i=0;i<dbresult.size();i++){
+            Object[] obs=dbresult.get(i);
+            OrderInfoModel orderInfoModel = new OrderInfoModel();
+            orderInfoModel.setKeyValue(Integer.valueOf(obs[0].toString()));
+            orderInfoModel.setKeyName(Integer.valueOf(obs[1].toString()));
+            result.add(orderInfoModel);
+        }
+        return result;
+    }
+
+    @Override
+    public List<Order> queryOrderNumByTime(String time) {
+        return orderRepository.findByCreateTimeGreaterThanEqual(time);
     }
 
 }

@@ -8,6 +8,7 @@ import cn.pch.hospitaldevicesystem.enums.ApplyTypeEnums;
 import cn.pch.hospitaldevicesystem.enums.HospitalEnums;
 import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
 import cn.pch.hospitaldevicesystem.enums.OrderStateEnums;
+import cn.pch.hospitaldevicesystem.model.response.OrderInfoModel;
 import cn.pch.hospitaldevicesystem.model.response.OrderModel;
 import cn.pch.hospitaldevicesystem.service.MessageService;
 import cn.pch.hospitaldevicesystem.service.OrderLogService;
@@ -210,5 +211,53 @@ public class OrderController {
     public RestResponse getOrderDetails(@RequestBody Map<String,String> orderInfo){
         OrderModel orderModel = orderService.queryOrderModelById(Long.valueOf(orderInfo.get("id")));
         return RestResponse.ok(orderModel);
+    }
+    /*
+        订单统计
+    */
+    @PostMapping("/getOrdersStatistics")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse getOrdersStates(){
+        List<List<Object>> result = new ArrayList<>();
+        List<Object> hospitalName = new ArrayList<>();
+        List<Object> hospitalNumber = new ArrayList<>();
+        List<Object> applyName = new ArrayList<>();
+        List<Object> applyNumber = new ArrayList<>();
+        List<Object> timeName = new ArrayList<>();
+        List<Object> timeNumber = new ArrayList<>();
+        //得到各医院的订单总数
+        List<OrderInfoModel> dbResultH = orderService.queryOrderNumGroupByHospital();
+        for(int i=0;i<dbResultH.size();i++){
+            hospitalName.add(HospitalEnums.of(Long.valueOf(dbResultH.get(i).getKeyName())).getName());
+            hospitalNumber.add(dbResultH.get(i).getKeyValue());
+        }
+        result.add(hospitalName);
+        result.add(hospitalNumber);
+        //得到订单申请分类
+        List<OrderInfoModel> dbResultA = orderService.queryOrderNumGroupByApplyType();
+        for(int i=0;i<dbResultA.size();i++){
+            applyName.add(ApplyTypeEnums.of(dbResultA.get(i).getKeyName()).getName());
+            applyNumber.add(dbResultA.get(i).getKeyValue());
+        }
+        result.add(applyName);
+        result.add(applyNumber);
+        //得到近一周的订单详情
+        List<Order> dbResultC = orderService.queryOrderNumByTime(MyDateUtils.GetNowDateRiQi(-6));
+        log.info("近一周的订单量:{} ", JSON.toJSONString(dbResultC));
+        for(int j=-6;j<=0;j++){
+            String tempTime = MyDateUtils.GetNowDateRiQi(j);
+            timeName.add(tempTime);
+            int num = 0;
+            for(int i=0;i<dbResultC.size();i++){
+                if(dbResultC.get(i).getCreateTime().compareTo(MyDateUtils.GetNowDateRiQi(j+1))<=0){
+                    num++;
+                    dbResultC.remove(i);
+                }
+            }
+            timeNumber.add(num);
+        }
+        result.add(timeName);
+        result.add(timeNumber);
+        return RestResponse.ok(result);
     }
 }
