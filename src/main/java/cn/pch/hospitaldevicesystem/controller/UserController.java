@@ -1,8 +1,10 @@
 package cn.pch.hospitaldevicesystem.controller;
 
+import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
+import cn.pch.hospitaldevicesystem.enums.RoleEnums;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
 import cn.pch.hospitaldevicesystem.service.MessageService;
 import cn.pch.hospitaldevicesystem.service.UserService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -92,8 +95,51 @@ public class UserController {
         user.setHospitalId(StrUtil.hasBlank(userInfo.get("hospitalId"))?user.getHospitalId():Long.valueOf(userInfo.get("hospitalId")));
         user.setUpdateTime(MyDateUtils.GetNowDate());
         user.setUpdateName(principal.getName());
-        List<UserModel> result = userService.queryAllByRole(userInfo.get("id"));
-        return RestResponse.ok(result).msg("请求成功");
+        userService.insertOneUser(user);
+        return RestResponse.ok().msg("修改成功");
+    }
+
+    /**
+     * 修改用户权限单独拿出来
+     */
+    @PostMapping("/updateRoleById")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse updateRoleById(Principal principal, @RequestBody Map<String,String> userInfo){
+        User user = userService.queryById(Long.valueOf(userInfo.get("id")));
+        user.setRole(StrUtil.hasBlank(userInfo.get("role"))?user.getRole():userInfo.get("role"));
+        user.setPassword(StrUtil.hasBlank(userInfo.get("password"))?user.getPassword():userInfo.get("password"));
+        user.setTel(StrUtil.hasBlank(userInfo.get("tel"))?user.getTel():userInfo.get("tel"));
+        user.setHeadUrl(StrUtil.hasBlank(userInfo.get("headUrl"))?user.getHeadUrl():userInfo.get("headUrl"));
+        user.setAddress(StrUtil.hasBlank(userInfo.get("address"))?user.getAddress():userInfo.get("address"));
+        user.setDepartment(StrUtil.hasBlank(userInfo.get("department"))?user.getDepartment():userInfo.get("department"));
+        user.setHospitalId(StrUtil.hasBlank(userInfo.get("hospitalId"))?user.getHospitalId():Long.valueOf(userInfo.get("hospitalId")));
+        user.setUpdateTime(MyDateUtils.GetNowDate());
+        user.setUpdateName(principal.getName());
+        userService.insertOneUser(user);
+        return RestResponse.ok().msg("管理员修改成功");
+    }
+
+    /*
+        得到权限枚举信息
+    */
+    @PostMapping("/getRoleEnums")
+    public RestResponse getRoleEnums(){
+        List<Object> names = EnumUtil.getFieldValues(RoleEnums.class, "name");
+        List<Object> states = EnumUtil.getFieldValues(RoleEnums.class, "code");
+        List<Object> result = new ArrayList<>();
+        result.add(names);
+        result.add(states);
+        return RestResponse.ok(result);
+    }
+
+    /*
+        物理删除信息
+    */
+    @PostMapping("/deleteUserById")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public RestResponse deleteUserById(@RequestBody Map<String,String> userInfo){
+        userService.removeByid(Long.valueOf(userInfo.get("id")));
+        return RestResponse.ok().msg("删除成功");
     }
 
 }

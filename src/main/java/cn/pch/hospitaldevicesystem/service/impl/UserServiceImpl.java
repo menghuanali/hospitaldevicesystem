@@ -56,7 +56,6 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
             User result = user.get();
-            result.setPassword("");
             return result;
         }else{
             return null;
