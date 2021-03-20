@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService {
             UserModel userModel = new UserModel();
             BeanUtil.copyProperties(queryById(dbResult.get(0).getId()),userModel);
             userModel.setRoleName(RoleEnums.of(userModel.getRole()).getName());
+            userModel.setHospitalName(HospitalEnums.of(userModel.getHospitalId()).getName());
             return userModel;
         }else {
             return null;

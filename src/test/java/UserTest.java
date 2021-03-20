@@ -101,7 +101,7 @@ public class UserTest extends TmallApplicationTests{
                 user.setRole(RoleEnums.ROLE_USER.getCode());
             }
             user.setTel(String.valueOf(RandomUtil.randomInt(1840000000,1849999999)+i%10));
-            user.setHeadUrl("static/images/mychushihead.jpg");
+            user.setHeadUrl("static/images/headimgs/mychushihead.jpg");
             user.setAddress("北京市朝阳区霄云路50号");
             user.setDepartment("科室2");
             user.setCreateName("创建者");
