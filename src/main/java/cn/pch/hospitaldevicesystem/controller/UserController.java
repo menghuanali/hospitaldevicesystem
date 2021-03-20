@@ -98,7 +98,7 @@ public class UserController {
         user.setTel(StrUtil.hasBlank(userInfo.get("tel"))?user.getTel():userInfo.get("tel"));
         user.setHeadUrl(StrUtil.hasBlank(userInfo.get("headUrl"))?user.getHeadUrl():userInfo.get("headUrl"));
         user.setAddress(StrUtil.hasBlank(userInfo.get("address"))?user.getAddress():userInfo.get("address"));
-        user.setUsername(StrUtil.hasBlank(userInfo.get("username"))?user.getAddress():userInfo.get("username"));
+        user.setUsername(StrUtil.hasBlank(userInfo.get("username"))?user.getUsername():userInfo.get("username"));
         user.setUpdateTime(MyDateUtils.GetNowDate());
         user.setUpdateName(principal.getName());
         userService.insertOneUser(user);
@@ -190,7 +190,8 @@ public class UserController {
     public RestResponse checkPassword(@RequestBody Map<String,String> userInfo){
         log.info(":{} ", JSON.toJSONString(userInfo));
         User user = userService.queryById(Long.valueOf(userInfo.get("id")));
-        if(user==null||user.getPassword()!=bCryptPasswordEncoder.encode(userInfo.get("password"))){
+        log.info(":{} ", JSON.toJSONString(user));
+        if(user==null||!bCryptPasswordEncoder.matches(userInfo.get("password"),user.getPassword())){
             return RestResponse.ok().msg("0");
         }else{
             return RestResponse.ok().msg(String.valueOf(user.getId()));
