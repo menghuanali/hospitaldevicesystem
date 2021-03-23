@@ -44,4 +44,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     */
     List<Order> findByCreateTimeGreaterThanEqual(String time);
 
+    /*
+        删除某个人或者某台设备相关的订单信息
+    */
+    void deleteByDoctorUserIdOrWorkerUserIdOrDeviceId(Long a,Long b,Long c);
+
 }

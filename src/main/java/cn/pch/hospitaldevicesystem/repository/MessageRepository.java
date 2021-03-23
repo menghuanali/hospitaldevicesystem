@@ -15,5 +15,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findAllByUserId(Long userId);
     List<Message> findAllByCreateName(String createName);
     List<Message> findAllByUserIdAndState(Long userId,Integer state);
+    void deleteByUserId(Long a);
 }
 

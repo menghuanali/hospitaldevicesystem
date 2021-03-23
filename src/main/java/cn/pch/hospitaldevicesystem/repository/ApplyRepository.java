@@ -16,4 +16,6 @@ public interface ApplyRepository extends JpaRepository<Apply, Long> {
         根据状态得到申请单
     */
     List<Apply> findAllByStateAndDelete(int state,int delete);
+
+    void deleteByFromUserIdOrDeviceId(Long a,Long b);
 }

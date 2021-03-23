@@ -10,7 +10,9 @@ import cn.pch.hospitaldevicesystem.repository.DeviceRepository;
 import cn.pch.hospitaldevicesystem.service.DeviceService;
 import cn.pch.hospitaldevicesystem.service.HospitalService;
 import cn.pch.hospitaldevicesystem.service.UserService;
+import cn.pch.hospitaldevicesystem.utils.DeleteUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,6 +33,8 @@ public class DeviceServiceImpl implements DeviceService {
     UserService userService;
     @Resource
     HospitalService hospitalService;
+    @Resource
+    DeleteUtils deleteUtils;
     @Override
     public List<DeviceModel> queryAllDevice() {
         List<Device> dbResultLsit = deviceRepository.findAll();
@@ -64,8 +68,10 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    @Transactional
     public void removeByid(Long id) {
         deviceRepository.deleteById(id);
+        deleteUtils.deleteDirtyData(0L,id);
     }
 
     @Override

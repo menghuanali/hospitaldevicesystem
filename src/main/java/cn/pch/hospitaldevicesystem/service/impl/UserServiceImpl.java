@@ -7,7 +7,9 @@ import cn.pch.hospitaldevicesystem.enums.RoleEnums;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
 import cn.pch.hospitaldevicesystem.repository.UserRepository;
 import cn.pch.hospitaldevicesystem.service.UserService;
+import cn.pch.hospitaldevicesystem.utils.DeleteUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     @Resource
     UserRepository userRepository;
+    @Resource
+    DeleteUtils deleteUtils;
 
     @Override
     public List<UserModel> queryAllUsers() {
@@ -72,8 +76,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void removeByid(Long id) {
         userRepository.deleteById(id);
+        deleteUtils.deleteDirtyData(id,0L);
     }
 
     @Override
