@@ -2,10 +2,15 @@ package cn.pch.hospitaldevicesystem.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.pch.hospitaldevicesystem.entity.Apply;
+import cn.pch.hospitaldevicesystem.enums.ApplyStateEnums;
+import cn.pch.hospitaldevicesystem.enums.ApplyTypeEnums;
 import cn.pch.hospitaldevicesystem.model.request.ApplyCreateModel;
 import cn.pch.hospitaldevicesystem.model.response.ApplyModel;
 import cn.pch.hospitaldevicesystem.repository.ApplyRepository;
 import cn.pch.hospitaldevicesystem.service.ApplyService;
+import cn.pch.hospitaldevicesystem.service.DeviceService;
+import cn.pch.hospitaldevicesystem.service.HospitalService;
+import cn.pch.hospitaldevicesystem.service.UserService;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +28,12 @@ import java.util.stream.Collectors;
 @Service
 public class ApplyServiceImpl implements ApplyService {
 
+    @Resource
+    UserService userService;
+    @Resource
+    DeviceService deviceService;
+    @Resource
+    HospitalService hospitalService;
     @Resource
     ApplyRepository applyRepository;
     @Override
@@ -44,6 +55,11 @@ public class ApplyServiceImpl implements ApplyService {
         List<ApplyModel> result = dbResultLsit.stream().map(apply -> {
             ApplyModel applyModel = new ApplyModel();
             BeanUtil.copyProperties(apply,applyModel);
+            applyModel.setDeviceName(deviceService.queryByid(applyModel.getDeviceId()).getName());
+            applyModel.setFromUserIdName(userService.queryById(applyModel.getFromUserId()).getUsername());
+            applyModel.setFromHospitalIdName(hospitalService.queryByid(applyModel.getFromHospitalId()).getName());
+            applyModel.setStateName(ApplyStateEnums.of(applyModel.getState()).getName());
+            applyModel.setFromTypeName(ApplyTypeEnums.of(applyModel.getFromType()).getName());
             return applyModel;
         }).collect(Collectors.toList());
         return result;

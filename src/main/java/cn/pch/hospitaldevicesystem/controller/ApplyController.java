@@ -42,4 +42,13 @@ public class ApplyController {
         applyService.insertOneApply(applyCreateModel);
         return RestResponse.ok().msg("申请成功");
     }
+
+    /*
+        申报审核
+    */
+    @PostMapping("/queryApply")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
+    public RestResponse queryApply(){
+        return RestResponse.ok(applyService.queryAll());
+    }
 }
