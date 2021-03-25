@@ -1,13 +1,23 @@
 package cn.pch.hospitaldevicesystem.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.pch.hospitaldevicesystem.entity.Device;
+import cn.pch.hospitaldevicesystem.entity.Hospital;
 import cn.pch.hospitaldevicesystem.entity.Message;
+import cn.pch.hospitaldevicesystem.entity.User;
+import cn.pch.hospitaldevicesystem.enums.DeviceStateEnums;
+import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
+import cn.pch.hospitaldevicesystem.model.response.DeviceModel;
+import cn.pch.hospitaldevicesystem.model.response.MessageModel;
 import cn.pch.hospitaldevicesystem.repository.MessageRepository;
 import cn.pch.hospitaldevicesystem.service.MessageService;
+import cn.pch.hospitaldevicesystem.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author 潘成花
@@ -19,19 +29,40 @@ import java.util.Optional;
 public class MessageServiceImpl implements MessageService {
     @Resource
     MessageRepository messageRepository;
+    @Resource
+    UserService userService;
     @Override
     public Message insertOneMessage(Message message) {
         return messageRepository.save(message);
     }
 
     @Override
-    public List<Message> queryAllByUserId(Long userId) {
-        return messageRepository.findAllByUserId(userId);
+    public List<MessageModel> queryAllByUserId(Long userId) {
+        List<Message> dbResultLsit = messageRepository.findAllByUserId(userId);
+        List<MessageModel> result = dbResultLsit.stream().map(message -> {
+            MessageModel messageModel = new MessageModel();
+            BeanUtil.copyProperties(message,messageModel);
+            messageModel.setStateName(MessageStateEnums.of(message.getState()).getName());
+            User user = userService.queryById(message.getUserId());
+            messageModel.setUserName(user.getUsername());
+            messageModel.setUserHeadUrl(user.getHeadUrl());
+            return messageModel;
+        }).collect(Collectors.toList());
+        return result;
     }
 
     @Override
-    public List<Message> queryAllByUserIdAndState(Long userId, Integer state) {
-        return messageRepository.findAllByUserIdAndState(userId,state);
+    public List<MessageModel> queryAllByUserIdAndState(Long userId, Integer state) {
+        List<Message> dbResultLsit = messageRepository.findAllByUserIdAndState(userId,state);
+        List<MessageModel> result = dbResultLsit.stream().map(message -> {
+            MessageModel messageModel = new MessageModel();
+            BeanUtil.copyProperties(message,messageModel);
+            messageModel.setStateName(MessageStateEnums.of(message.getState()).getName());
+            User user = userService.queryById(message.getUserId());
+            messageModel.setUserName(user.getUsername());
+            return messageModel;
+        }).collect(Collectors.toList());
+        return result;
     }
 
     @Override
@@ -51,7 +82,17 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> queryAllByCreateName(String createName) {
-        return messageRepository.findAllByCreateName(createName);
+    public List<MessageModel> queryAllByCreateName(String createName) {
+
+        List<Message> dbResultLsit = messageRepository.findAllByCreateName(createName);
+        List<MessageModel> result = dbResultLsit.stream().map(message -> {
+            MessageModel messageModel = new MessageModel();
+            BeanUtil.copyProperties(message,messageModel);
+            messageModel.setStateName(MessageStateEnums.of(message.getState()).getName());
+            User user = userService.queryById(message.getUserId());
+            messageModel.setUserName(user.getUsername());
+            return messageModel;
+        }).collect(Collectors.toList());
+        return result;
     }
 }

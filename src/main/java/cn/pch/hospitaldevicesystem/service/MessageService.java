@@ -1,6 +1,7 @@
 package cn.pch.hospitaldevicesystem.service;
 
 import cn.pch.hospitaldevicesystem.entity.Message;
+import cn.pch.hospitaldevicesystem.model.response.MessageModel;
 
 import java.util.List;
 
@@ -18,11 +19,11 @@ public interface MessageService {
     /*
         得到发给某人得所有短信
     */
-    List<Message> queryAllByUserId(Long userId);
+    List<MessageModel> queryAllByUserId(Long userId);
     /*
         得到发给某个人某个状态得所有短信
     */
-    List<Message> queryAllByUserIdAndState(Long userId,Integer state);
+    List<MessageModel> queryAllByUserIdAndState(Long userId,Integer state);
     /*
         根据id查找一条短信
     */
@@ -34,5 +35,5 @@ public interface MessageService {
     /*
         得到客服发的所有短信 前端去分类吧
     */
-    List<Message> queryAllByCreateName(String createName);
+    List<MessageModel> queryAllByCreateName(String createName);
 }

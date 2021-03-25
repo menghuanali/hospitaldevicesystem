@@ -71,6 +71,11 @@ public class ApplyServiceImpl implements ApplyService {
         List<ApplyModel> result = dbResultLsit.stream().map(apply -> {
                 ApplyModel applyModel = new ApplyModel();
                 BeanUtil.copyProperties(apply,applyModel);
+                applyModel.setDeviceName(deviceService.queryByid(applyModel.getDeviceId()).getName());
+                applyModel.setFromUserIdName(userService.queryById(applyModel.getFromUserId()).getUsername());
+                applyModel.setFromHospitalIdName(hospitalService.queryByid(applyModel.getFromHospitalId()).getName());
+                applyModel.setStateName(ApplyStateEnums.of(applyModel.getState()).getName());
+                applyModel.setFromTypeName(ApplyTypeEnums.of(applyModel.getFromType()).getName());
                 return applyModel;
             }).collect(Collectors.toList());
         return result;
