@@ -68,4 +68,22 @@ public class MessageController {
         Collections.reverse(result);
         return RestResponse.ok(result);
     }
+    /**
+     * 删除一条短信
+     */
+    @PostMapping("/deleteMessage")
+    public RestResponse deleteMessage(@RequestBody Map<String,String> msgInfo){
+        messageService.removeByid(Long.valueOf(msgInfo.get("id")));
+        return RestResponse.ok().msg("删除成功");
+    }
+    /**
+     * 阅读一条短信
+     */
+    @PostMapping("/resdMessage")
+    public RestResponse resdMessage(@RequestBody Map<String,String> msgInfo){
+        Message message = messageService.queryByid(Long.valueOf(msgInfo.get("id")));
+        message.setState(MessageStateEnums.READED.getState());
+        messageService.insertOneMessage(message);
+        return RestResponse.ok().msg("阅读成功");
+    }
 }
