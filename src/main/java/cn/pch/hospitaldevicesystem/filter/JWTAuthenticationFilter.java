@@ -88,7 +88,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // 按照jwt的规定，最后请求的时候应该是 `Bearer token`
         // 设置字符集
         response.setCharacterEncoding("utf-8");
-        response.getWriter().write("{\"error\":0,\"message\":\"登陆成功\",\"token\":\""+JwtTokenUtils.TOKEN_PREFIX + token+"\"}");
+        response.getWriter().write("{\"error\":0,\"message\":\"登陆成功\",\"role\":\""+role+"\",\"token\":\""+JwtTokenUtils.TOKEN_PREFIX + token+"\"}");
     }
 
     @Override
