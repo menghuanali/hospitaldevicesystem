@@ -67,4 +67,12 @@ public interface OrderService {
         得到一周内的订单数
     */
     List<Order> queryOrderNumByTime(String time);
+    /*
+        查询该用户下待签收的订单
+    */
+    List<OrderModel> queryOrderByUserNameAndState(Long userId,Integer state);
+    /*
+        修改订单
+    */
+    Order updateOrder(Order order);
 }

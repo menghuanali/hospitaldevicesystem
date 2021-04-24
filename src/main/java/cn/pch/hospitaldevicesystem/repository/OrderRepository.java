@@ -48,5 +48,9 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
         删除某个人或者某台设备相关的订单信息
     */
     void deleteByDoctorUserIdOrWorkerUserIdOrDeviceId(Long a,Long b,Long c);
+    /*
+        查询该用户下待签收的订单
+    */
+    List<Order> findAllByWorkerUserIdAndState(Long workerId,Integer state);
 
 }

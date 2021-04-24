@@ -194,4 +194,26 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByCreateTimeGreaterThanEqual(time);
     }
 
+    @Override
+    public List<OrderModel> queryOrderByUserNameAndState(Long userId, Integer state) {
+        List<Order> dbResultLsit = orderRepository.findAllByWorkerUserIdAndState(userId,state);
+        List<OrderModel> result = dbResultLsit.stream().map(order -> {
+            OrderModel orderModel = new OrderModel();
+            BeanUtil.copyProperties(order,orderModel);
+            orderModel.setDeviceName(deviceService.queryByid(orderModel.getDeviceId()).getName());
+            orderModel.setDoctorUserName(userService.queryById(orderModel.getDoctorUserId()).getUsername());
+            orderModel.setWorkerUserName(userService.queryById(orderModel.getWorkerUserId()).getUsername());
+            orderModel.setHospitalName(hospitalService.queryByid(orderModel.getHospitalId()).getName());
+            orderModel.setTypeName(ApplyTypeEnums.of(orderModel.getType()).getName());
+            orderModel.setStateName(OrderStateEnums.of(orderModel.getState()).getName());
+            return orderModel;
+        }).collect(Collectors.toList());
+        return result;
+    }
+
+    @Override
+    public Order updateOrder(Order order) {
+        return orderRepository.save(order);
+    }
+
 }

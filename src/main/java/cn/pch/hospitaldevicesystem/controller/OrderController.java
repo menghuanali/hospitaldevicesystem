@@ -10,9 +10,11 @@ import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
 import cn.pch.hospitaldevicesystem.enums.OrderStateEnums;
 import cn.pch.hospitaldevicesystem.model.response.OrderInfoModel;
 import cn.pch.hospitaldevicesystem.model.response.OrderModel;
+import cn.pch.hospitaldevicesystem.model.response.UserModel;
 import cn.pch.hospitaldevicesystem.service.MessageService;
 import cn.pch.hospitaldevicesystem.service.OrderLogService;
 import cn.pch.hospitaldevicesystem.service.OrderService;
+import cn.pch.hospitaldevicesystem.service.UserService;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
 import com.alibaba.fastjson.JSON;
@@ -44,6 +46,8 @@ public class OrderController {
     OrderLogService orderLogService;
     @Resource
     MessageService messageService;
+    @Resource
+    UserService userService;
     /**
      * 根据医护人员的电话新增一个订单
      * 权限客服和管理员
@@ -118,15 +122,15 @@ public class OrderController {
     public RestResponse portionOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
         Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
         order.setWorkerUserId(Long.valueOf(orderInfo.get("workerUserId")));
-        order.setState(OrderStateEnums.PROCESSING.getState());//维修人员处理中
+        order.setState(OrderStateEnums.PROCESSING.getState());//维修人员待确认中
         orderService.insertOneOrder(order);
         //保存日志
         log.info("分派调单详情:{} ", JSON.toJSONString(orderInfo));
         String log = "";
         if(!StrUtil.hasBlank(orderInfo.get("portiondialogVisible"))&&orderInfo.get("portiondialogVisible").equals("true")){
-            log = "订单ID "+ order.getId() +" 分派给 "+orderInfo.get("workerUserName")+" 等待维修中";
+            log = "订单ID "+ order.getId() +" 分派给 "+orderInfo.get("workerUserName")+" 等待确认中";
         }else{
-            log = "订单ID "+ order.getId() +" 调度给 "+orderInfo.get("workerUserName")+" 等待维修中";
+            log = "订单ID "+ order.getId() +" 调度给 "+orderInfo.get("workerUserName")+" 等待确认中";
         }
         orderLogService.insertOneLog(order.getId(),principal.getName(),log);
         //给客户发消息说明
@@ -259,5 +263,65 @@ public class OrderController {
         result.add(timeName);
         result.add(timeNumber);
         return RestResponse.ok(result);
+    }
+
+    /*
+    查询该用户下待签收的订单
+    */
+    @PostMapping("/getOrderSigning")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_WXUSER')")
+    public RestResponse getOrderSigning(Principal principal){
+        UserModel nowUser = userService.queryByUserName(principal.getName());
+        return RestResponse.ok(orderService.queryOrderByUserNameAndState(nowUser.getId(),OrderStateEnums.PROCESSING.getState()));
+    }
+    /*
+        确认签收订单 其实就是修改状态为7
+    */
+    @PostMapping("/uptateOrderStateConfirm")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_WXUSER')")
+    public RestResponse uptateOrderStateConfirm(Principal principal,@RequestBody Map<String,String> orderInfo){
+        Order nowOrder = orderService.queryById(Long.valueOf(orderInfo.get("id")));
+        nowOrder.setState(OrderStateEnums.BECONFIRMED.getState());
+        orderService.updateOrder(nowOrder);
+        //保存日志
+        String log  = "订单ID "+ orderInfo.get("id") +" 被 "+principal.getName()+" 确认签收 ";
+        orderLogService.insertOneLog(Long.valueOf(orderInfo.get("id")),principal.getName(),log);
+        //给客户发消息说明
+        Message message = new Message();
+        message.setUserId(nowOrder.getDoctorUserId());
+        message.setState(MessageStateEnums.WAIT_READ.getState());
+        String msg = "你申请的维修订单号为:"+nowOrder.getId()+"被维修师傅："+principal.getName()+" 确认签收，请耐心等待维修";
+        message.setContent(msg);
+        message.setCreateName(principal.getName());
+        message.setCreateTime(MyDateUtils.GetNowDate());
+        messageService.insertOneMessage(message);
+        return RestResponse.ok().msg("确认签收订单成功");
+    }
+
+    /*
+    确认签收订单 其实就是修改状态为7
+*/
+    @PostMapping("/uptateOrderStateReject")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_WXUSER')")
+    public RestResponse uptateOrderStateReject(Principal principal,@RequestBody Map<String,String> orderInfo){
+        Order nowOrder = orderService.queryById(Long.valueOf(orderInfo.get("id")));
+        nowOrder.setState(OrderStateEnums.WAIT_ACCEPT.getState());
+        nowOrder.setWorkerUserId(null);
+        nowOrder.setUpdateName(principal.getName());
+        nowOrder.setUpdateTime(MyDateUtils.GetNowDate());
+        orderService.updateOrder(nowOrder);
+        //保存日志
+        String log  = "订单ID "+ orderInfo.get("id") +" 被 "+principal.getName()+" 拒绝签收 ";
+        orderLogService.insertOneLog(Long.valueOf(orderInfo.get("id")),principal.getName(),log);
+        //给客户发消息说明
+        Message message = new Message();
+        message.setUserId(nowOrder.getDoctorUserId());
+        message.setState(MessageStateEnums.WAIT_READ.getState());
+        String msg = "你申请的维修订单号为:"+nowOrder.getId()+"被维修师傅："+principal.getName()+" 拒绝签收，请耐心等待重新分派";
+        message.setContent(msg);
+        message.setCreateName(principal.getName());
+        message.setCreateTime(MyDateUtils.GetNowDate());
+        messageService.insertOneMessage(message);
+        return RestResponse.ok().msg("拒绝签收订单成功");
     }
 }
