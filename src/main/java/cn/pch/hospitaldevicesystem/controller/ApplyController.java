@@ -1,6 +1,7 @@
 package cn.pch.hospitaldevicesystem.controller;
 
 import cn.pch.hospitaldevicesystem.entity.Apply;
+import cn.pch.hospitaldevicesystem.entity.Device;
 import cn.pch.hospitaldevicesystem.entity.Message;
 import cn.pch.hospitaldevicesystem.entity.Order;
 import cn.pch.hospitaldevicesystem.enums.*;
@@ -34,6 +35,8 @@ public class ApplyController {
     OrderLogService orderLogService;
     @Resource
     MessageService messageService;
+    @Resource
+    DeviceService deviceService;
     /**
      * 创建一个申请单也就是故障申报
      */
@@ -49,6 +52,10 @@ public class ApplyController {
         applyCreateModel.setFromUserId(userService.queryIdByUserName(principal.getName()));
         applyCreateModel.setCreateName(principal.getName());
         applyService.insertOneApply(applyCreateModel);
+        //修改设备状态为 故障中，申请维修中
+        Device updateDevice = deviceService.queryByid(Long.valueOf(applyMapModel.get("deviceId")));
+        updateDevice.setState(DeviceStateEnums.FAULTING.getState());
+        deviceService.insertOneDevice(updateDevice);
         return RestResponse.ok().msg("申请成功");
     }
 

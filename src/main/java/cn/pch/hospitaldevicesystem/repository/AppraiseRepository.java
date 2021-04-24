@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2021/1/27 17:36
  **/
 public interface AppraiseRepository extends JpaRepository<Appraise, Long> {
-    List<Appraise> findAllByOrderIdOrderByIdDesc(Long orderId);
+    Appraise findByOrderId(Long orderId);
     List<Appraise> findAllByOrderIdAndTypeOrderByIdDesc(Long orderId,Integer type);
 
     @Modifying

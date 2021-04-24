@@ -7,12 +7,12 @@ package cn.pch.hospitaldevicesystem.enums;
  * @create: 2021-01-27 00:55
  **/
 public enum AppraiseTypeEnums {
-    GOOD_APPRAISE("好评",1),
+    GOOD_APPRAISE("好评",3),
     MEDIUM_APPRAISE("中评",2),
-    BAD_APPRAISE("差评",3),
-    ADD_GOOD_APPRAISE("追加好评",4),
-    ADD_MEDIUM_APPRAISE("追加好评",5),
-    ADD_BAD_APPRAISE("追加好评",6);
+    BAD_APPRAISE("差评",1),
+    ADD_GOOD_APPRAISE("追加好评",6),
+    ADD_MEDIUM_APPRAISE("追加中评",5),
+    ADD_BAD_APPRAISE("追加差评",4);
     private final String name;
     private final Integer code;
 

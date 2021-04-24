@@ -8,9 +8,7 @@ import cn.pch.hospitaldevicesystem.service.AppraiseService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @author 潘成花
@@ -39,26 +37,11 @@ public class AppraiseServiceImpl implements AppraiseService {
     }
 
     @Override
-    public List<AppraiseModel> queryAllByOrderId(Long orderId) {
-        List<Appraise> dbResultLsit = appraiseRepository.findAllByOrderIdOrderByIdDesc(orderId);
-        List<AppraiseModel> result = dbResultLsit.stream().map(appraise -> {
-            AppraiseModel appraiseModel = new AppraiseModel();
-                BeanUtil.copyProperties(appraise,appraiseModel);
-                return appraiseModel;
-            }).collect(Collectors.toList());
-        return result;
+    public Appraise queryAllByOrderId(Long orderId) {
+        Appraise dbResult = appraiseRepository.findByOrderId(orderId);
+        return  dbResult;
     }
 
-    @Override
-    public List<AppraiseModel> queryAllByOrderIdAndState(Long orderId, Integer type) {
-        List<Appraise> dbResultLsit = appraiseRepository.findAllByOrderIdAndTypeOrderByIdDesc(orderId,type);
-        List<AppraiseModel> result = dbResultLsit.stream().map(appraise -> {
-            AppraiseModel appraiseModel = new AppraiseModel();
-            BeanUtil.copyProperties(appraise,appraiseModel);
-            return appraiseModel;
-        }).collect(Collectors.toList());
-        return result;
-    }
 
     @Override
     public void removeByid(Long id) {

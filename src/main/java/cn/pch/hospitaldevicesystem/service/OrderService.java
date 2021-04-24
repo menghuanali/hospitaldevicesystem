@@ -72,6 +72,14 @@ public interface OrderService {
     */
     List<OrderModel> queryOrderByUserNameAndState(Long userId,Integer state);
     /*
+    查询该用户下状态1 2 7 3 5 6的订单
+    */
+    List<OrderModel> queryOrderByUserIdAndGoing(Long userId);
+    /*
+    查询该用户下历史的订单
+*/
+    List<OrderModel> queryHistoryOrderByUserName(Long userId);
+    /*
         修改订单
     */
     Order updateOrder(Order order);

@@ -1,9 +1,6 @@
 package cn.pch.hospitaldevicesystem.service;
 
 import cn.pch.hospitaldevicesystem.entity.Appraise;
-import cn.pch.hospitaldevicesystem.model.response.AppraiseModel;
-
-import java.util.List;
 
 /**
  * @author 潘成花
@@ -21,13 +18,10 @@ public interface AppraiseService {
     */
     Appraise queryByid(Long id);
     /*
-        得到某个订单得所有评价并且按照时间降序
+        得到某个订单的评价，因为是1对1的关系
     */
-    List<AppraiseModel> queryAllByOrderId(Long orderId);
-    /*
-    得到某个订单得所有评价某个状态得评价并且按照时间降序
-*/
-    List<AppraiseModel> queryAllByOrderIdAndState(Long orderId,Integer type);
+    Appraise queryAllByOrderId(Long orderId);
+
     /*
     根据id删除
     */

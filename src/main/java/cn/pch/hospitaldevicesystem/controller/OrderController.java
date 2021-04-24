@@ -2,19 +2,14 @@ package cn.pch.hospitaldevicesystem.controller;
 
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.pch.hospitaldevicesystem.entity.Device;
 import cn.pch.hospitaldevicesystem.entity.Message;
 import cn.pch.hospitaldevicesystem.entity.Order;
-import cn.pch.hospitaldevicesystem.enums.ApplyTypeEnums;
-import cn.pch.hospitaldevicesystem.enums.HospitalEnums;
-import cn.pch.hospitaldevicesystem.enums.MessageStateEnums;
-import cn.pch.hospitaldevicesystem.enums.OrderStateEnums;
+import cn.pch.hospitaldevicesystem.enums.*;
 import cn.pch.hospitaldevicesystem.model.response.OrderInfoModel;
 import cn.pch.hospitaldevicesystem.model.response.OrderModel;
 import cn.pch.hospitaldevicesystem.model.response.UserModel;
-import cn.pch.hospitaldevicesystem.service.MessageService;
-import cn.pch.hospitaldevicesystem.service.OrderLogService;
-import cn.pch.hospitaldevicesystem.service.OrderService;
-import cn.pch.hospitaldevicesystem.service.UserService;
+import cn.pch.hospitaldevicesystem.service.*;
 import cn.pch.hospitaldevicesystem.utils.MyDateUtils;
 import cn.pch.hospitaldevicesystem.utils.RestResponse;
 import com.alibaba.fastjson.JSON;
@@ -48,6 +43,8 @@ public class OrderController {
     MessageService messageService;
     @Resource
     UserService userService;
+    @Resource
+    DeviceService deviceService;
     /**
      * 根据医护人员的电话新增一个订单
      * 权限客服和管理员
@@ -153,7 +150,7 @@ public class OrderController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RestResponse delayOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
         Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
-        order.setState(OrderStateEnums.DETAL.getState());//维修人员处理中
+        order.setState(OrderStateEnums.DETAL.getState());//订单延误
         orderService.insertOneOrder(order);
         //保存日志
         String log  = "订单ID "+ order.getId() +" 被延误 ";
@@ -163,6 +160,14 @@ public class OrderController {
         message.setUserId(order.getDoctorUserId());
         message.setState(MessageStateEnums.WAIT_READ.getState());
         String msg = "你申请的维修订单号为:"+order.getId()+"非常抱歉延误了!请耐心等待";
+        message.setContent(msg);
+        message.setCreateName(principal.getName());
+        message.setCreateTime(MyDateUtils.GetNowDate());
+        messageService.insertOneMessage(message);
+        //给维修人员发消息说明订单延误
+        message.setUserId(order.getWorkerUserId());
+        message.setState(MessageStateEnums.WAIT_READ.getState());
+        msg = "你处理的维修订单号为:"+order.getId()+"延误了!请尽快处理";
         message.setContent(msg);
         message.setCreateName(principal.getName());
         message.setCreateTime(MyDateUtils.GetNowDate());
@@ -272,7 +277,41 @@ public class OrderController {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_WXUSER')")
     public RestResponse getOrderSigning(Principal principal){
         UserModel nowUser = userService.queryByUserName(principal.getName());
-        return RestResponse.ok(orderService.queryOrderByUserNameAndState(nowUser.getId(),OrderStateEnums.PROCESSING.getState()));
+        List<OrderModel> result = orderService.queryOrderByUserNameAndState(nowUser.getId(),OrderStateEnums.PROCESSING.getState());
+        List<OrderModel> yawuresult = orderService.queryOrderByUserNameAndState(nowUser.getId(),OrderStateEnums.DETAL.getState());
+        yawuresult.addAll(result);
+        return RestResponse.ok(yawuresult);
+    }
+
+    /*
+    查询该用户下已经签收的订单
+    */
+    @PostMapping("/getOrderSigned")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_WXUSER')")
+    public RestResponse getOrderSigned(Principal principal){
+        UserModel nowUser = userService.queryByUserName(principal.getName());
+        List<OrderModel> result = orderService.queryOrderByUserNameAndState(nowUser.getId(),OrderStateEnums.BECONFIRMED.getState());
+        List<OrderModel> allresult = orderService.queryOrderByUserNameAndState(nowUser.getId(),OrderStateEnums.WAIT_OPINION.getState());
+        result.addAll(allresult);
+        return RestResponse.ok(result);
+    }
+    /*
+    查询该用户下已经申请且没有完成的订单
+    */
+    @PostMapping("/getOrderGoingByUser")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_YHUSER')")
+    public RestResponse getOrderGoingByUser(Principal principal){
+        UserModel nowUser = userService.queryByUserName(principal.getName());
+        return RestResponse.ok(orderService.queryOrderByUserIdAndGoing(nowUser.getId()));
+    }
+    /*
+    查询该用户下已经历史的订单
+    */
+    @PostMapping("/getOrderHistoryByUser")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_WXUSER') or hasRole('ROLE_YHUSER')")
+    public RestResponse getOrderHistoryByUser(Principal principal){
+        UserModel nowUser = userService.queryByUserName(principal.getName());
+        return RestResponse.ok(orderService.queryHistoryOrderByUserName(nowUser.getId()));
     }
     /*
         确认签收订单 其实就是修改状态为7
@@ -295,12 +334,16 @@ public class OrderController {
         message.setCreateName(principal.getName());
         message.setCreateTime(MyDateUtils.GetNowDate());
         messageService.insertOneMessage(message);
+        //修改设备状态为 维修后待维修
+        Device updateDevice = deviceService.queryByid(nowOrder.getDeviceId());
+        updateDevice.setState(DeviceStateEnums.WAIT_REPAIR.getState());
+        deviceService.insertOneDevice(updateDevice);
         return RestResponse.ok().msg("确认签收订单成功");
     }
 
     /*
-    确认签收订单 其实就是修改状态为7
-*/
+    确认拒绝订单 其实就是修改状态为1 清空维修人员
+    */
     @PostMapping("/uptateOrderStateReject")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_WXUSER')")
     public RestResponse uptateOrderStateReject(Principal principal,@RequestBody Map<String,String> orderInfo){
@@ -323,5 +366,64 @@ public class OrderController {
         message.setCreateTime(MyDateUtils.GetNowDate());
         messageService.insertOneMessage(message);
         return RestResponse.ok().msg("拒绝签收订单成功");
+    }
+    /*
+    确认完成订单 其实就是修改状态为3
+    */
+    @PostMapping("/uptateOrderStateComplete")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_WXUSER')")
+    public RestResponse uptateOrderStateComplete(Principal principal,@RequestBody Map<String,String> orderInfo){
+        Order nowOrder = orderService.queryById(Long.valueOf(orderInfo.get("id")));
+        nowOrder.setState(OrderStateEnums.WAIT_OPINION.getState());
+        nowOrder.setUpdateName(principal.getName());
+        nowOrder.setUpdateTime(MyDateUtils.GetNowDate());
+        orderService.updateOrder(nowOrder);
+        //保存日志
+        String log  = "订单ID "+ orderInfo.get("id") +" 被 "+principal.getName()+" 维修完成 维修情况:"+orderInfo.get("content");;
+        orderLogService.insertOneLog(Long.valueOf(orderInfo.get("id")),principal.getName(),log);
+        //给客户发消息说明
+        Message message = new Message();
+        message.setUserId(nowOrder.getDoctorUserId());
+        message.setState(MessageStateEnums.WAIT_READ.getState());
+        String msg = "你申请的维修订单号为:"+nowOrder.getId()+"被维修师傅："+principal.getName()+" 维修完成，请及时评价.维修情况:"+orderInfo.get("content");
+        message.setContent(msg);
+        message.setCreateName(principal.getName());
+        message.setCreateTime(MyDateUtils.GetNowDate());
+        messageService.insertOneMessage(message);
+        //修改设备状态为 维修后待确定
+        Device updateDevice = deviceService.queryByid(nowOrder.getDeviceId());
+        updateDevice.setState(DeviceStateEnums.COMFIRM.getState());
+        deviceService.insertOneDevice(updateDevice);
+        return RestResponse.ok().msg("订单完成成功，设备修好了，待确认");
+    }
+
+    /*
+    设备维修不了 报废
+    */
+    @PostMapping("/uptateOrderStateScrap")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_WXUSER')")
+    public RestResponse uptateOrderStateScrap(Principal principal,@RequestBody Map<String,String> orderInfo){
+        Order nowOrder = orderService.queryById(Long.valueOf(orderInfo.get("id")));
+        nowOrder.setState(OrderStateEnums.FAILURE.getState());
+        nowOrder.setUpdateName(principal.getName());
+        nowOrder.setUpdateTime(MyDateUtils.GetNowDate());
+        orderService.updateOrder(nowOrder);
+        //保存日志
+        String log  = "订单ID "+ orderInfo.get("id") +" 被 "+principal.getName()+" 确认无法维修，直接报废,维修情况:"+orderInfo.get("content");
+        orderLogService.insertOneLog(Long.valueOf(orderInfo.get("id")),principal.getName(),log);
+        //给客户发消息说明
+        Message message = new Message();
+        message.setUserId(nowOrder.getDoctorUserId());
+        message.setState(MessageStateEnums.WAIT_READ.getState());
+        String msg = "你申请的维修订单号为:"+nowOrder.getId()+"被维修师傅："+principal.getName()+" 确认无法维修，直接报废，请及时评价.维修情况:"+orderInfo.get("content");
+        message.setContent(msg);
+        message.setCreateName(principal.getName());
+        message.setCreateTime(MyDateUtils.GetNowDate());
+        messageService.insertOneMessage(message);
+        //修改设备状态为 报废
+        Device updateDevice = deviceService.queryByid(nowOrder.getDeviceId());
+        updateDevice.setState(DeviceStateEnums.SCRAPPED.getState());
+        deviceService.insertOneDevice(updateDevice);
+        return RestResponse.ok().msg("订单完成成功，设备报废了");
     }
 }
