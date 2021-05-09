@@ -80,7 +80,7 @@ public class OrderController {
         查询出指定条件的订单
     */
     @PostMapping("/listOrder")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
     public RestResponse listOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
         Order order = new Order();
         order.setState(StrUtil.hasBlank(orderInfo.get("state"))?null:Integer.valueOf(orderInfo.get("state")));
@@ -106,7 +106,7 @@ public class OrderController {
     订单处理 查询出指定1 2 5 6 状态下的订单
     */
     @PostMapping("/listProcessOrder")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
     public RestResponse listProcessOrder(){
         return RestResponse.ok(orderService.queryProcessOrder());
     }
@@ -115,7 +115,7 @@ public class OrderController {
         分派订单 调单
     */
     @PostMapping("/portionOrder")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
     public RestResponse portionOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
         Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
         order.setWorkerUserId(Long.valueOf(orderInfo.get("workerUserId")));
@@ -147,7 +147,7 @@ public class OrderController {
         延误订单
     */
     @PostMapping("/delayOrder")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
     public RestResponse delayOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
         Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
         order.setState(OrderStateEnums.DETAL.getState());//订单延误
@@ -179,7 +179,7 @@ public class OrderController {
     删除订单
     */
     @PostMapping("/deleteOrder")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
     public RestResponse deleteOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
         Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
         orderService.removeByid(Long.valueOf(orderInfo.get("id")));
@@ -202,7 +202,7 @@ public class OrderController {
     得到订单状态枚举
     */
     @PostMapping("/getStateEnums")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
     public RestResponse getStateEnums(){
         List<Object> names = EnumUtil.getFieldValues(OrderStateEnums.class, "name");
         List<Object> states = EnumUtil.getFieldValues(OrderStateEnums.class, "state");
@@ -216,7 +216,7 @@ public class OrderController {
         订单详情
     */
     @PostMapping("/getOrderDetails")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
     public RestResponse getOrderDetails(@RequestBody Map<String,String> orderInfo){
         OrderModel orderModel = orderService.queryOrderModelById(Long.valueOf(orderInfo.get("id")));
         return RestResponse.ok(orderModel);
@@ -225,7 +225,7 @@ public class OrderController {
         订单统计
     */
     @PostMapping("/getOrdersStatistics")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
     public RestResponse getOrdersStates(){
         List<List<Object>> result = new ArrayList<>();
         List<Object> hospitalName = new ArrayList<>();

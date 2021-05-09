@@ -43,9 +43,9 @@ public class AuthController {
         user.setRole(RoleEnums.ROLE_USER.getCode());//最开始是访客人员
         user.setTel(registerUser.get("tel"));
         user.setHeadUrl("static/images/headimgs/mychushihead.jpg");
-        user.setAddress(registerUser.get("address")==null?null:registerUser.get("address"));
-        user.setDepartment(registerUser.get("department")==null?null:registerUser.get("department"));
-        user.setHospitalId(registerUser.get("hospitalId")==null?null:Long.valueOf(registerUser.get("hospitalId")));
+        user.setAddress(registerUser.get("address")==null||registerUser.get("address")==""?null:registerUser.get("address"));
+        user.setDepartment(registerUser.get("department")==null||registerUser.get("department")==""?null:registerUser.get("department"));
+        user.setHospitalId(registerUser.get("hospitalId")==null||registerUser.get("hospitalId")==""?null:Long.valueOf(registerUser.get("hospitalId")));
         user.setCreateName("系统");
         user.setCreateTime(MyDateUtils.GetNowDate());
         log.info(":{} ", JSON.toJSONString(user));

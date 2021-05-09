@@ -57,13 +57,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     /*
     查询出指定人3 4 8状态下的订单
     */
-    @Query(value = "select * from myorder where state=4 OR state=8 AND worker_userid = :id OR doctor_userid = :id", nativeQuery = true)
+    @Query(value = "select * from myorder where state in (4,8) AND worker_userid = :id OR doctor_userid = :id", nativeQuery = true)
     List<Order> findALLUserHistoryOrder(@Param("id")Long id);
 
     /*
     查询出医生状态1 2 7 3 5 6的订单
     */
-    @Query(value = "select * from myorder where state=1 OR state=2 OR state=7 OR state=3 OR state=5 OR state=6 AND doctor_userid = :id", nativeQuery = true)
+    @Query(value = "select * from myorder where state in (1,2,3,5,6,7) AND doctor_userid = :id", nativeQuery = true)
     List<Order> findAllOrderByUserIdAndGoing(@Param("id")Long id);
 
 

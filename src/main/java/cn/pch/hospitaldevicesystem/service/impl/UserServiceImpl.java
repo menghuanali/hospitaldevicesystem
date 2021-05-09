@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
         List<UserModel> result = users.stream().map(user -> {
             UserModel userModel = new UserModel();
             BeanUtil.copyProperties(user,userModel);
-            userModel.setHospitalName(HospitalEnums.of(userModel.getHospitalId()).getName());
+            userModel.setHospitalName(userModel.getHospitalId()==null?null:HospitalEnums.of(userModel.getHospitalId()).getName());
             userModel.setRoleName(RoleEnums.of(userModel.getRole()).getName());
             return userModel;
         }).collect(Collectors.toList());
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         List<UserModel> result = users.stream().map(user -> {
             UserModel userModel = new UserModel();
             BeanUtil.copyProperties(user,userModel);
-            userModel.setHospitalName(HospitalEnums.of(userModel.getHospitalId()).getName());
+            userModel.setHospitalName(userModel.getHospitalId()==null?null:HospitalEnums.of(userModel.getHospitalId()).getName());
             userModel.setRoleName(RoleEnums.of(userModel.getRole()).getName());
             return userModel;
         }).collect(Collectors.toList());
