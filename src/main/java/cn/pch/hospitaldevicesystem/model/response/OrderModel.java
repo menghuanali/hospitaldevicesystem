@@ -67,6 +67,10 @@ public class OrderModel extends BaseModel{
     */
     private String comeTime;
     /*
+    预计到场修理时间
+    */
+    private Integer isAddAppraise;
+    /*
         日志信息
     */
     private List<OrderLog> logs;

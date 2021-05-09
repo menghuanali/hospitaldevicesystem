@@ -1,6 +1,7 @@
 package cn.pch.hospitaldevicesystem.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.pch.hospitaldevicesystem.entity.Appraise;
 import cn.pch.hospitaldevicesystem.entity.Order;
 import cn.pch.hospitaldevicesystem.enums.ApplyTypeEnums;
 import cn.pch.hospitaldevicesystem.enums.OrderStateEnums;
@@ -38,6 +39,8 @@ public class OrderServiceImpl implements OrderService {
     HospitalService hospitalService;
     @Resource
     OrderLogService orderLogService;
+    @Resource
+    AppraiseService appraiseService;
     @Override
     public List<OrderModel> queryAll() {
         List<Order> dbResultLsit =  orderRepository.findAll();
@@ -236,10 +239,14 @@ public class OrderServiceImpl implements OrderService {
             BeanUtil.copyProperties(order,orderModel);
             orderModel.setDeviceName(deviceService.queryByid(orderModel.getDeviceId()).getName());
             orderModel.setDoctorUserName(userService.queryById(orderModel.getDoctorUserId()).getUsername());
-            orderModel.setWorkerUserName(userService.queryById(orderModel.getWorkerUserId()).getUsername());
+            orderModel.setWorkerUserName(orderModel.getWorkerUserId()==null?null:userService.queryById(orderModel.getWorkerUserId()).getUsername());
             orderModel.setHospitalName(hospitalService.queryByid(orderModel.getHospitalId()).getName());
             orderModel.setTypeName(ApplyTypeEnums.of(orderModel.getType()).getName());
             orderModel.setStateName(OrderStateEnums.of(orderModel.getState()).getName());
+            Appraise appraise = appraiseService.queryAllByOrderId(order.getId());
+            if(appraise!=null){
+                orderModel.setIsAddAppraise(appraise.getType()<4?0:1);
+            }
             return orderModel;
         }).collect(Collectors.toList());
         return result;

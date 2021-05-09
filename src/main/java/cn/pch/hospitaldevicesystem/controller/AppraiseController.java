@@ -84,7 +84,7 @@ public class AppraiseController {
     }
 
     /**
-     * 给订单评价
+     * 给订单追加评价
      */
     @PostMapping("/addcreate")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KPJKEUSER') or hasRole('ROLE_YHUSER')")

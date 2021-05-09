@@ -31,7 +31,7 @@ public class OrderLogServiceImpl implements OrderLogService {
 
     @Override
     public List<OrderLog> queryAllByOrderId(Long orderId) {
-        return orderLogRepository.findAllByOrderIdOrderByIdDesc(orderId);
+        return orderLogRepository.findAllByOrderIdOrderByIdAsc(orderId);
     }
 
     @Override

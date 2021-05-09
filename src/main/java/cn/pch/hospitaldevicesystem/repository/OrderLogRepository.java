@@ -15,7 +15,7 @@ import java.util.List;
  * @date 2021/1/27 17:34
  **/
 public interface OrderLogRepository extends JpaRepository<OrderLog, Long> {
-    List<OrderLog> findAllByOrderIdOrderByIdDesc(Long orderId);
+    List<OrderLog> findAllByOrderIdOrderByIdAsc(Long orderId);
 
     @Modifying
     @Transactional

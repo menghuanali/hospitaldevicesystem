@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.pch.hospitaldevicesystem.entity.Device;
 import cn.pch.hospitaldevicesystem.entity.Message;
 import cn.pch.hospitaldevicesystem.entity.Order;
+import cn.pch.hospitaldevicesystem.entity.User;
 import cn.pch.hospitaldevicesystem.enums.*;
 import cn.pch.hospitaldevicesystem.model.response.OrderInfoModel;
 import cn.pch.hospitaldevicesystem.model.response.OrderModel;
@@ -106,7 +107,7 @@ public class OrderController {
     订单处理 查询出指定1 2 5 6 状态下的订单
     */
     @PostMapping("/listProcessOrder")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER') or hasRole('ROLE_WXUSER')")
     public RestResponse listProcessOrder(){
         return RestResponse.ok(orderService.queryProcessOrder());
     }
@@ -115,26 +116,27 @@ public class OrderController {
         分派订单 调单
     */
     @PostMapping("/portionOrder")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER') or hasRole('ROLE_WXUSER')")
     public RestResponse portionOrder(Principal principal, @RequestBody Map<String,String> orderInfo){
         Order order = orderService.queryById(Long.valueOf(orderInfo.get("id")));
         order.setWorkerUserId(Long.valueOf(orderInfo.get("workerUserId")));
         order.setState(OrderStateEnums.PROCESSING.getState());//维修人员待确认中
         orderService.insertOneOrder(order);
+        User workUser = userService.queryById(Long.valueOf(orderInfo.get("workerUserId")));
         //保存日志
         log.info("分派调单详情:{} ", JSON.toJSONString(orderInfo));
         String log = "";
         if(!StrUtil.hasBlank(orderInfo.get("portiondialogVisible"))&&orderInfo.get("portiondialogVisible").equals("true")){
-            log = "订单ID "+ order.getId() +" 分派给 "+orderInfo.get("workerUserName")+" 等待确认中";
+            log = "订单ID "+ order.getId() +" 分派给 "+workUser.getUsername()+" 等待确认中";
         }else{
-            log = "订单ID "+ order.getId() +" 调度给 "+orderInfo.get("workerUserName")+" 等待确认中";
+            log = "订单ID "+ order.getId() +" 调度给 "+workUser.getUsername()+" 等待确认中";
         }
         orderLogService.insertOneLog(order.getId(),principal.getName(),log);
         //给客户发消息说明
         Message message = new Message();
         message.setUserId(order.getDoctorUserId());
         message.setState(MessageStateEnums.WAIT_READ.getState());
-        String msg = "你申请的维修订单号为:"+order.getId()+"已经分派了维修师傅："+orderInfo.get("workerUserName")+" 请耐心等待";
+        String msg = "你申请的维修订单号为:"+order.getId()+"已经分派了维修师傅："+workUser.getUsername()+" 请耐心等待";
         message.setContent(msg);
         message.setCreateName(principal.getName());
         message.setCreateTime(MyDateUtils.GetNowDate());
@@ -216,7 +218,7 @@ public class OrderController {
         订单详情
     */
     @PostMapping("/getOrderDetails")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_KEUSER') or hasRole('ROLE_KPJKEUSER') or hasRole('ROLE_YHUSER')")
     public RestResponse getOrderDetails(@RequestBody Map<String,String> orderInfo){
         OrderModel orderModel = orderService.queryOrderModelById(Long.valueOf(orderInfo.get("id")));
         return RestResponse.ok(orderModel);
